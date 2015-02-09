@@ -1,0 +1,1 @@
+# wespeak-core
