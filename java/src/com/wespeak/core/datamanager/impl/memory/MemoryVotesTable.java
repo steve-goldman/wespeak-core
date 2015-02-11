@@ -3,6 +3,8 @@ package com.wespeak.core.datamanager.impl.memory;
 import com.wespeak.core.Vote;
 import com.wespeak.core.datamanager.VotesTable;
 
+import java.util.Iterator;
+
 public class MemoryVotesTable implements VotesTable
 {
     @Override
@@ -18,9 +20,15 @@ public class MemoryVotesTable implements VotesTable
     }
 
     @Override
-    public String[] getVoted(String userId)
+    public Iterator<String> getVoted(String userId)
     {
-        return new String[0];
+        return null;
+    }
+
+    @Override
+    public void setEligible(String userId, String statementId)
+    {
+
     }
 
     @Override

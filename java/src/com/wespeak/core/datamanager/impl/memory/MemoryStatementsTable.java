@@ -2,6 +2,8 @@ package com.wespeak.core.datamanager.impl.memory;
 
 import com.wespeak.core.datamanager.StatementsTable;
 
+import java.util.Iterator;
+
 public class MemoryStatementsTable implements StatementsTable
 {
     @Override
@@ -89,9 +91,9 @@ public class MemoryStatementsTable implements StatementsTable
     }
 
     @Override
-    public String[] getStatementIds(String userId)
+    public Iterator<String> getStatementIds(String userId)
     {
-        return new String[0];
+        return null;
     }
 
     @Override

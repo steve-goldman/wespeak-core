@@ -2,6 +2,8 @@ package com.wespeak.core.datamanager.impl.memory;
 
 import com.wespeak.core.datamanager.SupportTable;
 
+import java.util.Iterator;
+
 public class MemorySupportTable implements SupportTable
 {
     @Override
@@ -11,9 +13,9 @@ public class MemorySupportTable implements SupportTable
     }
 
     @Override
-    public String[] getSupported(String userId)
+    public Iterator<String> getSupported(String userId)
     {
-        return new String[0];
+        return null;
     }
 
     @Override

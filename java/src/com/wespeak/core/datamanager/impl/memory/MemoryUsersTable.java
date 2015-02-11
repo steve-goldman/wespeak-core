@@ -2,6 +2,8 @@ package com.wespeak.core.datamanager.impl.memory;
 
 import com.wespeak.core.datamanager.UsersTable;
 
+import java.util.Iterator;
+
 public class MemoryUsersTable implements UsersTable
 {
     @Override
@@ -26,6 +28,12 @@ public class MemoryUsersTable implements UsersTable
     public long getExpirationTime(String userId)
     {
         return 0;
+    }
+
+    @Override
+    public Iterator<String> getActiveUsers()
+    {
+        return null;
     }
 
     @Override
