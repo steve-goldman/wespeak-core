@@ -3,49 +3,82 @@ package com.wespeak.core.datamanager.impl.memory;
 import com.wespeak.core.Vote;
 import com.wespeak.core.datamanager.VotesTable;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class MemoryVotesTable implements VotesTable
 {
+    private final Map<String, Map<String, Vote>> votesByUserId = new HashMap<String, Map<String, Vote>>();
+    private final Map<String, Integer>           votesCount    = new HashMap<String, Integer>();
+    private final Map<String, Integer>           yesesCount    = new HashMap<String, Integer>();
+
     @Override
-    public boolean eligible(String userId, String statementId)
+    public boolean eligible(final String userId, final String statementId)
     {
-        return false;
+        final Map<String, Vote> votes = votesByUserId.get(userId);
+
+        return votes != null && votes.containsKey(statementId);
     }
 
     @Override
-    public Vote getVote(String userId, String statementId)
+    public Vote getVote(final String userId, final String statementId)
     {
-        return null;
+        return votesByUserId.get(userId).get(statementId);
     }
 
     @Override
-    public Iterator<String> getVoted(String userId)
+    public Iterator<String> getVoted(final String userId)
     {
-        return null;
+        if (!votesByUserId.containsKey(userId))
+        {
+            votesByUserId.put(userId, new LinkedHashMap<String, Vote>());
+        }
+
+        return votesByUserId.get(userId).keySet().iterator();
     }
 
     @Override
-    public void setEligible(String userId, String statementId)
+    public void beginVote(final String statementId)
     {
-
+        votesCount.put(statementId, 0);
+        yesesCount.put(statementId, 0);
     }
 
     @Override
-    public int getVoteCount(String statementId)
+    public void setEligible(final String userId, final String statementId)
     {
-        return 0;
+        if (!votesByUserId.containsKey(userId))
+        {
+            votesByUserId.put(userId, new LinkedHashMap<String, Vote>());
+        }
+
+        votesByUserId.get(userId).put(statementId, Vote.ABSTAIN);
     }
 
     @Override
-    public int getYesCount(String statementId)
+    public int getVoteCount(final String statementId)
     {
-        return 0;
+        return votesCount.get(statementId);
     }
 
     @Override
-    public void vote(String userId, String statementId, Vote vote)
+    public int getYesCount(final String statementId)
     {
+        return yesesCount.get(statementId);
+    }
 
+    @Override
+    public void vote(final String userId, final String statementId, final Vote vote)
+    {
+        votesByUserId.get(userId).put(statementId, vote);
+
+        votesCount.put(statementId, votesCount.get(statementId) + 1);
+
+        if (vote == Vote.YES)
+        {
+            yesesCount.put(statementId, yesesCount.get(statementId) + 1);
+        }
     }
 }

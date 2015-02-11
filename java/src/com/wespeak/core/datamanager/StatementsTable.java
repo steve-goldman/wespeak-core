@@ -29,6 +29,7 @@ public interface StatementsTable
     int      getNumEligibleVoters    (String statementId);
     int      getNumVotesNeeded       (String statementId);
     int      getNumYesesNeeded       (String statementId);
+    boolean  hasActiveStatements     ();
     String   getOldestActiveStatement();
 
     Iterator<String> getStatementIds (String userId);
@@ -53,5 +54,6 @@ public interface StatementsTable
                                       int    numVotesNeeded,
                                       int    numYesesNeeded);
 
-    void     endVote                 (String statementId);
+    void     endVoteAccepted         (String statementId);
+    void     endVoteRejected         (String statementId);
 }

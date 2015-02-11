@@ -30,7 +30,7 @@ public class DataManagerImpl implements DataManager
         // if the user is currently active, keep the original "from" time
         if (usersTable.exists(userId) && usersTable.isActive(userId))
         {
-            usersTable.setActive(userId, usersTable.getActiveTime(userId), until);
+            usersTable.extendActive(userId, until);
         }
         // otherwise use "now" as the "from" time
         else
@@ -49,6 +49,9 @@ public class DataManagerImpl implements DataManager
                        final int numSupportNeeded)
     {
         validateUserExists(userId);
+
+        // statement must NOT already exist
+        validateStatementExists(statementId, false);
 
         validateTimeOrdering(now, until);
 
@@ -111,17 +114,29 @@ public class DataManagerImpl implements DataManager
             votesTable.setEligible(iter.next(), statementId);
         }
 
+        votesTable.beginVote(statementId);
+
         statementsTable.beginVote(statementId, now, until, numEligibleVoters, numVotesNeeded, numYesesNeeded);
     }
 
     @Override
-    public void endVote(final String statementId)
+    public void endVoteAccepted(final String statementId)
     {
         validateStatementExists(statementId);
 
         validateStatementVoting(statementId);
 
-        statementsTable.endVote(statementId);
+        statementsTable.endVoteAccepted(statementId);
+    }
+
+    @Override
+    public void endVoteRejected(final String statementId)
+    {
+        validateStatementExists(statementId);
+
+        validateStatementVoting(statementId);
+
+        statementsTable.endVoteRejected(statementId);
     }
 
     @Override
@@ -325,6 +340,12 @@ public class DataManagerImpl implements DataManager
     }
 
     @Override
+    public boolean hasActiveUsers()
+    {
+        return usersTable.hasActiveUsers();
+    }
+
+    @Override
     public int getNumYesesNeeded(final String statementId)
     {
         validateStatementExists(statementId);
@@ -338,6 +359,12 @@ public class DataManagerImpl implements DataManager
     public String getOldestActiveUserId()
     {
         return usersTable.getOldestActiveUserId();
+    }
+
+    @Override
+    public boolean hasActiveStatements()
+    {
+        return statementsTable.hasActiveStatements();
     }
 
     @Override
@@ -420,9 +447,14 @@ public class DataManagerImpl implements DataManager
 
     private void validateStatementExists(final String statementId)
     {
-        if (!statementsTable.exists(statementId))
+        validateStatementExists(statementId, true);
+    }
+
+    private void validateStatementExists(final String statementId, final boolean exists)
+    {
+        if (statementsTable.exists(statementId) != exists)
         {
-            throw new IllegalArgumentException("statement:" + statementId + " does not exist");
+            throw new IllegalArgumentException("statement:" + statementId + (exists ? " does not exist" : "exists"));
         }
     }
 

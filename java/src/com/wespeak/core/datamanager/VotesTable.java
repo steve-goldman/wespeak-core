@@ -18,6 +18,7 @@ public interface VotesTable
     //
     // setters
     //
+    void     beginVote       (String statementId);
     void     setEligible     (String userId, String statementId);
     void     vote            (String userId, String statementId, Vote vote);
 }

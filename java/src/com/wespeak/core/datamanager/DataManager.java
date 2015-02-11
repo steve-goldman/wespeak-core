@@ -20,7 +20,8 @@ public interface DataManager
     void timeoutUser     (String userId);
     void timeoutStatement(String statementId);
     void beginVote       (long now, String statementId, long until, int numEligibleVoters, int numVotesNeeded, int numYesesNeeded);
-    void endVote         (String statementId);
+    void endVoteAccepted (String statementId);
+    void endVoteRejected (String statementId);
 
     //
     // queries
@@ -54,7 +55,9 @@ public interface DataManager
     int      getNumYesesNeeded         (String statementId);
     int      getNumYeses               (String statementId);
 
+    boolean  hasActiveUsers            ();
     String   getOldestActiveUserId     ();
+    boolean  hasActiveStatements       ();
     String   getOldestActiveStatementId();
 
     boolean  isSupported               (String userId, String statementId);

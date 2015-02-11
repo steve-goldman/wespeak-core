@@ -12,11 +12,13 @@ public interface UsersTable
     long    getActiveTime        (String userId);
     long    getExpirationTime    (String userId);
     Iterator<String> getActiveUsers();
+    boolean hasActiveUsers       ();
     String  getOldestActiveUserId();
 
     //
     // setters
     //
+    void    extendActive         (String userId, long until);
     void    setActive            (String userId, long from, long until);
     void    setInactive          (String userId);
 }
