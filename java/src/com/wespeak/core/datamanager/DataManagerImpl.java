@@ -2,6 +2,8 @@ package com.wespeak.core.datamanager;
 
 import com.wespeak.core.Vote;
 
+import java.util.Iterator;
+
 public class DataManagerImpl implements DataManager
 {
     private final UsersTable      usersTable;
@@ -361,7 +363,7 @@ public class DataManagerImpl implements DataManager
     }
 
     @Override
-    public String[] getSubmittedStatementIds(final String userId)
+    public Iterator<String> getSubmittedStatementIds(final String userId)
     {
         validateUserExists(userId);
 
@@ -369,7 +371,7 @@ public class DataManagerImpl implements DataManager
     }
 
     @Override
-    public String[] getSupportedStatementsIds(final String userId)
+    public Iterator<String> getSupportedStatementsIds(final String userId)
     {
         validateUserExists(userId);
 
@@ -377,7 +379,7 @@ public class DataManagerImpl implements DataManager
     }
 
     @Override
-    public String[] getVotedStatementIds(final String userId)
+    public Iterator<String> getVotedStatementIds(final String userId)
     {
         validateUserExists(userId);
 

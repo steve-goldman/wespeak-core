@@ -1,5 +1,7 @@
 package com.wespeak.core.datamanager;
 
+import java.util.Iterator;
+
 public interface StatementsTable
 {
     public enum State
@@ -28,7 +30,8 @@ public interface StatementsTable
     int      getNumVotesNeeded       (String statementId);
     int      getNumYesesNeeded       (String statementId);
     String   getOldestActiveStatement();
-    String[] getStatementIds         (String userId);
+
+    Iterator<String> getStatementIds (String userId);
 
     //
     // setters

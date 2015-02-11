@@ -2,6 +2,8 @@ package com.wespeak.core.datamanager;
 
 import com.wespeak.core.Vote;
 
+import java.util.Iterator;
+
 public interface DataManager
 {
     //
@@ -58,7 +60,7 @@ public interface DataManager
     boolean  isSupported               (String userId, String statementId);
     Vote     getVote                   (String userId, String statementId);
 
-    String[] getSubmittedStatementIds  (String userId);
-    String[] getSupportedStatementsIds (String userId);
-    String[] getVotedStatementIds      (String userId);
+    Iterator<String> getSubmittedStatementIds (String userId);
+    Iterator<String> getSupportedStatementsIds(String userId);
+    Iterator<String> getVotedStatementIds     (String userId);
 }
