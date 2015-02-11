@@ -105,7 +105,11 @@ public class DataManagerImpl implements DataManager
 
         validateVoteCounts(numEligibleVoters, numVotesNeeded, numYesesNeeded);
 
-        // TODO: add a stub row in the votes table for each eligible voter
+        final Iterator<String> iter = usersTable.getActiveUsers();
+        while (iter.hasNext())
+        {
+            votesTable.setEligible(iter.next(), statementId);
+        }
 
         statementsTable.beginVote(statementId, now, until, numEligibleVoters, numVotesNeeded, numYesesNeeded);
     }
