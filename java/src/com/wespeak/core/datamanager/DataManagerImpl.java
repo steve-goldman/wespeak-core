@@ -251,6 +251,8 @@ public class DataManagerImpl implements DataManager
 
         validateStatementVoting(statementId);
 
+        validateUserEligibleToVote(userId, statementId);
+
         return getUserActiveTime(userId) < getVoteBeginTime(statementId);
     }
 
@@ -359,6 +361,8 @@ public class DataManagerImpl implements DataManager
 
         validateStatementIsOrEverVoted(statementId);
 
+        validateUserEligibleToVote(userId, statementId);
+
         return votesTable.getVote(userId, statementId);
     }
 
@@ -460,6 +464,14 @@ public class DataManagerImpl implements DataManager
                 state != StatementsTable.State.REJECTED)
         {
             throw new IllegalStateException("statement:" + statementId + " has not entered voting state, state:" + state);
+        }
+    }
+
+    private void validateUserEligibleToVote(final String userId, final String statementId)
+    {
+        if (!votesTable.eligible(userId, statementId))
+        {
+            throw new IllegalStateException("user:" + userId + " is/was not eligible to vote on statementId:" + statementId);
         }
     }
 }
