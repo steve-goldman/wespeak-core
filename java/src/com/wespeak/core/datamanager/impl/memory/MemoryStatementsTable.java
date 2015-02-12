@@ -198,6 +198,8 @@ public class MemoryStatementsTable implements StatementsTable
 
         statementData.state             = State.VOTING;
 
+        activeStatements.remove(statementData);
+
         statementData.voteBeginTime     = voteBeginTime;
         statementData.voteEndTime       = voteEndTime;
         statementData.numEligibleVoters = numEligibleVoters;

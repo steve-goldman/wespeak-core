@@ -1,7 +1,5 @@
 package com.wespeak.core;
 
-import com.wespeak.core.Vote;
-
 import java.util.Iterator;
 
 public interface DataQueries
