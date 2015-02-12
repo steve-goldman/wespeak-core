@@ -41,7 +41,7 @@ public class MemoryStatementsTable implements StatementsTable
         }
     }
 
-    private final Map<String, StatementData> statementsById     = new HashMap<String, StatementData>();
+    private final Map<String, StatementData> statementsById     = new LinkedHashMap<String, StatementData>();
     private final Queue<StatementData>       activeStatements   = new LinkedList<StatementData>();
     private final Queue<StatementData>       inactiveStatements = new LinkedList<StatementData>();
     private final Queue<StatementData>       votingStatements   = new LinkedList<StatementData>();
