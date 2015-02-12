@@ -101,6 +101,8 @@ public class DataManager implements DataActions, DataQueries
     {
         validateStatementExists(statementId);
 
+        validateStatementActive(statementId);
+
         statementsTable.setInactive(statementId);
     }
 
