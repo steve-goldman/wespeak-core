@@ -1,10 +1,12 @@
 package com.wespeak.core.datamanager;
 
+import com.wespeak.core.DataActions;
+import com.wespeak.core.DataQueries;
 import com.wespeak.core.Vote;
 
 import java.util.Iterator;
 
-public class DataManagerImpl implements DataManager
+public class DataManagerImpl implements DataActions, DataQueries
 {
     private final UsersTable      usersTable;
     private final StatementsTable statementsTable;
