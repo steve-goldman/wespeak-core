@@ -53,6 +53,8 @@ public class DataManager implements DataActions, DataQueries
     {
         validateUserExists(userId);
 
+        validateUserActive(userId);
+
         // statement must NOT already exist
         validateStatementExists(statementId, false);
 
@@ -89,6 +91,8 @@ public class DataManager implements DataActions, DataQueries
     public void timeoutUser(final String userId)
     {
         validateUserExists(userId);
+
+        validateUserActive(userId);
 
         usersTable.setInactive(userId);
     }
@@ -259,6 +263,8 @@ public class DataManager implements DataActions, DataQueries
     {
         validateUserExists(userId);
 
+        validateUserActive(userId);
+
         return usersTable.getActiveTime(userId);
     }
 
@@ -267,6 +273,8 @@ public class DataManager implements DataActions, DataQueries
     {
         validateUserExists(userId);
 
+        validateUserActive(userId);
+
         return usersTable.getExpirationTime(userId) - now;
     }
 
@@ -274,6 +282,8 @@ public class DataManager implements DataActions, DataQueries
     public boolean canSupport(final String userId, final String statementId)
     {
         validateUserExists(userId);
+
+        validateUserActive(userId);
 
         validateStatementExists(statementId);
 
@@ -286,6 +296,8 @@ public class DataManager implements DataActions, DataQueries
     public boolean canVote(final String userId, final String statementId)
     {
         validateUserExists(userId);
+
+        validateUserActive(userId);
 
         validateStatementExists(statementId);
 
@@ -397,6 +409,8 @@ public class DataManager implements DataActions, DataQueries
     {
         validateUserExists(userId);
 
+        // user does not need to be active for this
+
         validateStatementExists(statementId);
 
         return supportTable.supports(userId, statementId);
@@ -406,6 +420,8 @@ public class DataManager implements DataActions, DataQueries
     public Vote getVote(final String userId, final String statementId)
     {
         validateUserExists(userId);
+
+        // user does not need to be active for this
 
         validateStatementExists(statementId);
 
@@ -421,6 +437,8 @@ public class DataManager implements DataActions, DataQueries
     {
         validateUserExists(userId);
 
+        // user does not need to be active for this
+
         return statementsTable.getStatementIds(userId);
     }
 
@@ -428,6 +446,8 @@ public class DataManager implements DataActions, DataQueries
     public Iterator<String> getSupportedStatementsIds(final String userId)
     {
         validateUserExists(userId);
+
+        // user does not need to be active for this
 
         return supportTable.getSupported(userId);
     }
@@ -437,7 +457,17 @@ public class DataManager implements DataActions, DataQueries
     {
         validateUserExists(userId);
 
+        // user does not need to be active for this
+
         return votesTable.getVoted(userId);
+    }
+
+    private void validateUserActive(final String userId)
+    {
+        if (!usersTable.isActive(userId))
+        {
+            throw new IllegalStateException("user:" + userId + " is not active");
+        }
     }
 
     private void validateUserExists(final String userId)
