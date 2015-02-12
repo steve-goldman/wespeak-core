@@ -11,10 +11,7 @@ public interface DataQueries
     boolean  isUserActive              (String userId);
 
     boolean  isStatementExists         (String statementId);
-    boolean  isStatementActive         (String statementId);
-    boolean  isVoting                  (String statementId);
-    boolean  isAccepted                (String statementId);
-    boolean  isRejected                (String statementId);
+    StatementState getState            (String statementId);
 
     String   getText                   (String statementId);
     String   getSubmitter              (String statementId);

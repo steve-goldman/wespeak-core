@@ -1,5 +1,6 @@
 package com.wespeak.core.datamanager;
 
+import com.wespeak.core.StatementState;
 import com.wespeak.core.Vote;
 import org.junit.Assert;
 import org.junit.Before;
@@ -50,7 +51,7 @@ public class DataManagerTest
         Assert.assertEquals(T0, dataManager.getUserActiveTime(Steve));
         Assert.assertEquals(T2 - T0, dataManager.getUserTTL(T0, Steve));
         Assert.assertEquals(T2 - T1, dataManager.getUserTTL(T1, Steve));
-        Assert.assertEquals(0,       dataManager.getUserTTL(T2, Steve));
+        Assert.assertEquals(0, dataManager.getUserTTL(T2, Steve));
     }
 
     @Test
@@ -122,10 +123,7 @@ public class DataManagerTest
         Assert.assertEquals(Statement1, dataManager.getOldestActiveStatementId());
 
         Assert.assertTrue(dataManager.isStatementExists(Statement1));
-        Assert.assertTrue(dataManager.isStatementActive(Statement1));
-        Assert.assertFalse(dataManager.isVoting(Statement1));
-        Assert.assertFalse(dataManager.isAccepted(Statement1));
-        Assert.assertFalse(dataManager.isRejected(Statement1));
+        Assert.assertEquals(StatementState.ACTIVE, dataManager.getState(Statement1));
         Assert.assertEquals("all of western thought", dataManager.getText(Statement1));
         Assert.assertEquals(Steve, dataManager.getSubmitter(Statement1));
         Assert.assertEquals(T1, dataManager.getSubmissionTime(Statement1));
@@ -147,10 +145,7 @@ public class DataManagerTest
 
         dataManager.beginVote(T3, Statement1, T4, 500, 50, 60);
         Assert.assertFalse(dataManager.hasActiveStatements());
-        Assert.assertFalse(dataManager.isStatementActive(Statement1));
-        Assert.assertTrue(dataManager.isVoting(Statement1));
-        Assert.assertFalse(dataManager.isAccepted(Statement1));
-        Assert.assertFalse(dataManager.isRejected(Statement1));
+        Assert.assertEquals(StatementState.VOTING, dataManager.getState(Statement1));
         Assert.assertEquals(500, dataManager.getNumEligibleVoters(Statement1));
         Assert.assertEquals(50, dataManager.getPropVotesNeeded(Statement1));
         Assert.assertEquals(60, dataManager.getPropYesesNeeded(Statement1));
@@ -178,10 +173,7 @@ public class DataManagerTest
         Assert.assertFalse(dataManager.canVote(Ssor, Statement1));
 
         dataManager.endVoteAccepted(Statement1);
-        Assert.assertFalse(dataManager.isStatementActive(Statement1));
-        Assert.assertFalse(dataManager.isVoting(Statement1));
-        Assert.assertTrue(dataManager.isAccepted(Statement1));
-        Assert.assertFalse(dataManager.isRejected(Statement1));
+        Assert.assertEquals(StatementState.ACCEPTED, dataManager.getState(Statement1));
     }
 
     private void validateQueue(final Iterator<String> iter, final String[] statements)

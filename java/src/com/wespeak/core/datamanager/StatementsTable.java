@@ -1,25 +1,18 @@
 package com.wespeak.core.datamanager;
 
+import com.wespeak.core.StatementState;
+
 import java.util.Iterator;
 
 public interface StatementsTable
 {
-    public enum State
-    {
-        ACTIVE,
-        INACTIVE,
-        VOTING,
-        ACCEPTED,
-        REJECTED,
-    }
-
     //
     // getters
     //
     boolean  exists                  (String statementId);
     String   getSubmitter            (String statementId);
     String   getText                 (String statementId);
-    State    getState                (String statementId);
+    StatementState getState          (String statementId);
     long     getSubmissionTime       (String statementId);
     long     getExpirationTime       (String statementId);
     long     getVoteBeginTime        (String statementId);

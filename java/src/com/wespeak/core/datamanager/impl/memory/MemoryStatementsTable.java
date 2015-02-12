@@ -1,5 +1,6 @@
 package com.wespeak.core.datamanager.impl.memory;
 
+import com.wespeak.core.StatementState;
 import com.wespeak.core.datamanager.StatementsTable;
 
 import java.util.*;
@@ -16,7 +17,7 @@ public class MemoryStatementsTable implements StatementsTable
         final int    numEligibleSupporters;
         final int    propSupportNeeded;
 
-        State state = State.ACTIVE;
+        StatementState state = StatementState.ACTIVE;
         long  voteBeginTime;
         long  voteEndTime;
         int   numEligibleVoters;
@@ -67,7 +68,7 @@ public class MemoryStatementsTable implements StatementsTable
     }
 
     @Override
-    public State getState(final String statementId)
+    public StatementState getState(final String statementId)
     {
         return statementsById.get(statementId).state;
     }
@@ -259,7 +260,7 @@ public class MemoryStatementsTable implements StatementsTable
     public void setInactive(final String statementId)
     {
         final StatementData statementData = statementsById.get(statementId);
-        statementData.state = State.INACTIVE;
+        statementData.state = StatementState.INACTIVE;
 
         activeStatements.remove(statementData);
         inactiveStatements.add(statementData);
@@ -274,7 +275,7 @@ public class MemoryStatementsTable implements StatementsTable
                           final int    propYesesNeeded)
     {
         final StatementData statementData = statementsById.get(statementId);
-        statementData.state = State.VOTING;
+        statementData.state = StatementState.VOTING;
 
         activeStatements.remove(statementData);
         votingStatements.add(statementData);
@@ -290,7 +291,7 @@ public class MemoryStatementsTable implements StatementsTable
     public void endVoteAccepted(final String statementId)
     {
         final StatementData statementData = statementsById.get(statementId);
-        statementData.state = State.ACCEPTED;
+        statementData.state = StatementState.ACCEPTED;
 
         votingStatements.remove(statementData);
         acceptedStatements.add(statementData);
@@ -300,7 +301,7 @@ public class MemoryStatementsTable implements StatementsTable
     public void endVoteRejected(final String statementId)
     {
         final StatementData statementData = statementsById.get(statementId);
-        statementData.state = State.REJECTED;
+        statementData.state = StatementState.REJECTED;
 
         votingStatements.remove(statementData);
         rejectedStatements.add(statementData);

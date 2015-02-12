@@ -2,6 +2,7 @@ package com.wespeak.core.datamanager;
 
 import com.wespeak.core.DataActions;
 import com.wespeak.core.DataQueries;
+import com.wespeak.core.StatementState;
 import com.wespeak.core.Vote;
 
 import java.util.Iterator;
@@ -171,35 +172,9 @@ public class DataManager implements DataActions, DataQueries
     }
 
     @Override
-    public boolean isStatementActive(final String statementId)
+    public StatementState getState(String statementId)
     {
-        validateStatementExists(statementId);
-
-        return statementsTable.getState(statementId) == StatementsTable.State.ACTIVE;
-    }
-
-    @Override
-    public boolean isVoting(final String statementId)
-    {
-        validateStatementExists(statementId);
-
-        return statementsTable.getState(statementId) == StatementsTable.State.VOTING;
-    }
-
-    @Override
-    public boolean isAccepted(final String statementId)
-    {
-        validateStatementExists(statementId);
-
-        return statementsTable.getState(statementId) == StatementsTable.State.ACCEPTED;
-    }
-
-    @Override
-    public boolean isRejected(final String statementId)
-    {
-        validateStatementExists(statementId);
-
-        return statementsTable.getState(statementId) == StatementsTable.State.REJECTED;
+        return statementsTable.getState(statementId);
     }
 
     @Override
@@ -542,7 +517,7 @@ public class DataManager implements DataActions, DataQueries
 
     private void validateStatementActive(final String statementId)
     {
-        if (statementsTable.getState(statementId) != StatementsTable.State.ACTIVE)
+        if (statementsTable.getState(statementId) != StatementState.ACTIVE)
         {
             throw new IllegalStateException("statement:" + statementId + " is not active, state:" + statementsTable.getState(statementId));
         }
@@ -568,7 +543,7 @@ public class DataManager implements DataActions, DataQueries
 
     private void validateStatementVoting(final String statementId)
     {
-        if (statementsTable.getState(statementId) != StatementsTable.State.VOTING)
+        if (statementsTable.getState(statementId) != StatementState.VOTING)
         {
             throw new IllegalStateException("statement:" + statementId + " is not voting, state:" + statementsTable.getState(statementId));
         }
@@ -576,10 +551,10 @@ public class DataManager implements DataActions, DataQueries
 
     private void validateStatementIsOrEverVoted(final String statementId)
     {
-        final StatementsTable.State state = statementsTable.getState(statementId);
-        if (state != StatementsTable.State.VOTING &&
-                state != StatementsTable.State.ACCEPTED &&
-                state != StatementsTable.State.REJECTED)
+        final StatementState state = statementsTable.getState(statementId);
+        if (state != StatementState.VOTING &&
+                state != StatementState.ACCEPTED &&
+                state != StatementState.REJECTED)
         {
             throw new IllegalStateException("statement:" + statementId + " has not entered voting state, state:" + state);
         }
