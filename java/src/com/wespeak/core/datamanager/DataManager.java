@@ -9,10 +9,10 @@ public interface DataManager
     //
     // user actions
     //
-    void heartbeat(long now, String userId, long until);
-    void submit   (long now, String userId, String statementId, String text, long until, int numEligibleSupporters, int numSupportNeeded);
-    void support  (String userId, String statementId);
-    void vote     (String userId, String statementId, Vote vote);
+    void heartbeat(long now, String userId, long userActiveUntil);
+    void submit   (long now, String userId, String statementId, String text, long statementActiveUntil, int numEligibleSupporters, int numSupportNeeded, long userActiveUntil);
+    void support  (String userId, String statementId, long userActiveUntil);
+    void vote     (String userId, String statementId, Vote vote, long userActiveUntil);
 
     //
     // engine actions

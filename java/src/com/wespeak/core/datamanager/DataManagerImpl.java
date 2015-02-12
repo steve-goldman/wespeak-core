@@ -23,19 +23,19 @@ public class DataManagerImpl implements DataManager
     }
 
     @Override
-    public void heartbeat(final long now, final String userId, final long until)
+    public void heartbeat(final long now, final String userId, final long userActiveUntil)
     {
-        validateTimeOrdering(now, until);
+        validateTimeOrdering(now, userActiveUntil);
 
         // if the user is currently active, keep the original "from" time
         if (usersTable.exists(userId) && usersTable.isActive(userId))
         {
-            usersTable.extendActive(userId, until);
+            usersTable.extendActive(userId, userActiveUntil);
         }
         // otherwise use "now" as the "from" time
         else
         {
-            usersTable.setActive(userId, now, until);
+            usersTable.setActive(userId, now, userActiveUntil);
         }
     }
 
@@ -44,34 +44,41 @@ public class DataManagerImpl implements DataManager
                        final String userId,
                        final String statementId,
                        final String text,
-                       final long until,
+                       final long statementActiveUntil,
                        final int numEligibleSupporters,
-                       final int numSupportNeeded)
+                       final int numSupportNeeded,
+                       final long userActiveUntil)
     {
         validateUserExists(userId);
 
         // statement must NOT already exist
         validateStatementExists(statementId, false);
 
-        validateTimeOrdering(now, until);
+        validateTimeOrdering(now, statementActiveUntil);
 
         validateSupportCounts(numEligibleSupporters, numSupportNeeded);
 
-        statementsTable.addStatement(statementId, userId, text, now, until, numEligibleSupporters, numSupportNeeded);
+        usersTable.extendActive(userId, userActiveUntil);
+
+        statementsTable.addStatement(statementId, userId, text, now, statementActiveUntil, numEligibleSupporters, numSupportNeeded);
     }
 
     @Override
-    public void support(final String userId, final String statementId)
+    public void support(final String userId, final String statementId, final long userActiveUntil)
     {
         // pre-conditions are validated in canSupport, which the client must call
+
+        usersTable.extendActive(userId, userActiveUntil);
 
         supportTable.support(userId, statementId);
     }
 
     @Override
-    public void vote(final String userId, final String statementId, final Vote vote)
+    public void vote(final String userId, final String statementId, final Vote vote, final long userActiveUntil)
     {
         // pre-conditions are validated in canVote, which the client must call
+
+        usersTable.extendActive(userId, userActiveUntil);
 
         votesTable.vote(userId, statementId, vote);
     }
