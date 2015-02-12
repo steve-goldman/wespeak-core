@@ -258,4 +258,202 @@ public class DataManagerTest
 
         validateQueues(emptySet, new String[] {Statement1}, emptySet, new String[] {Statement2}, new String[] {Statement3});
     }
+
+    @Test
+    public void stateTransitionsToInactive()
+    {
+        dataManager.heartbeat(T0, Steve, T2);
+
+        dataManager.submit(T1, Steve, Statement1, "all of western thought", T3, 100, 10, T3);
+
+        Assert.assertEquals(StatementState.ACTIVE, dataManager.getState(Statement1));
+
+        dataManager.timeoutStatement(Statement1);
+
+        Assert.assertEquals(StatementState.INACTIVE, dataManager.getState(Statement1));
+    }
+
+    @Test
+    public void stateTransitionsToAccepted()
+    {
+        dataManager.heartbeat(T0, Steve, T2);
+
+        dataManager.submit(T1, Steve, Statement1, "all of western thought", T3, 100, 10, T3);
+
+        Assert.assertEquals(StatementState.ACTIVE, dataManager.getState(Statement1));
+
+        dataManager.beginVote(T2, Statement1, T4, 100, 50, 50);
+
+        Assert.assertEquals(StatementState.VOTING, dataManager.getState(Statement1));
+
+        dataManager.endVoteAccepted(Statement1);
+
+        Assert.assertEquals(StatementState.ACCEPTED, dataManager.getState(Statement1));
+    }
+
+    @Test
+    public void stateTransitionsToRejected()
+    {
+        dataManager.heartbeat(T0, Steve, T2);
+
+        dataManager.submit(T1, Steve, Statement1, "all of western thought", T3, 100, 10, T3);
+
+        Assert.assertEquals(StatementState.ACTIVE, dataManager.getState(Statement1));
+
+        dataManager.beginVote(T2, Statement1, T4, 100, 50, 50);
+
+        Assert.assertEquals(StatementState.VOTING, dataManager.getState(Statement1));
+
+        dataManager.endVoteRejected(Statement1);
+
+        Assert.assertEquals(StatementState.REJECTED, dataManager.getState(Statement1));
+    }
+
+    private void validateSubmitNotValid(final String statement)
+    {
+        boolean threw = false;
+        try
+        {
+            dataManager.submit(T1, Steve, statement, "all of western thought", T3, 100, 10, T3);
+        }
+        catch (final IllegalStateException e)
+        {
+            threw = true;
+        }
+        Assert.assertTrue(threw);
+    }
+
+    private void validateTimeoutNotValid(final String statement)
+    {
+        boolean threw = false;
+        try
+        {
+            dataManager.timeoutStatement(statement);
+        }
+        catch (final IllegalStateException e)
+        {
+            threw = true;
+        }
+        Assert.assertTrue(threw);
+    }
+
+    private void validateBeginVoteNotValid(final String statement)
+    {
+        boolean threw = false;
+        try
+        {
+            dataManager.beginVote(T3, statement, T4, 100, 50, 50);
+        }
+        catch (final IllegalStateException e)
+        {
+            threw = true;
+        }
+        Assert.assertTrue(threw);
+    }
+
+    private void validateEndVoteAcceptedNotValid(final String statement)
+    {
+        boolean threw = false;
+        try
+        {
+            dataManager.endVoteAccepted(statement);
+        }
+        catch (final IllegalStateException e)
+        {
+            threw = true;
+        }
+        Assert.assertTrue(threw);
+    }
+
+    private void validateEndVoteRejectedNotValid(final String statement)
+    {
+        boolean threw = false;
+        try
+        {
+            dataManager.endVoteRejected(statement);
+        }
+        catch (final IllegalStateException e)
+        {
+            threw = true;
+        }
+        Assert.assertTrue(threw);
+    }
+
+    @Test
+    public void invalidStateTransitionsFromActive()
+    {
+        dataManager.heartbeat(T0, Steve, T2);
+
+        dataManager.submit(T1, Steve, Statement1, "all of western thought", T3, 100, 10, T3);
+
+        validateSubmitNotValid(Statement1);
+        validateEndVoteAcceptedNotValid(Statement1);
+        validateEndVoteRejectedNotValid(Statement1);
+    }
+
+    @Test
+    public void invalidStateTransitionsFromInactive()
+    {
+        dataManager.heartbeat(T0, Steve, T2);
+
+        dataManager.submit(T1, Steve, Statement1, "all of western thought", T3, 100, 10, T3);
+
+        dataManager.timeoutStatement(Statement1);
+
+        validateSubmitNotValid(Statement1);
+        validateTimeoutNotValid(Statement1);
+        validateBeginVoteNotValid(Statement1);
+        validateEndVoteAcceptedNotValid(Statement1);
+        validateEndVoteRejectedNotValid(Statement1);
+    }
+
+    @Test
+    public void invalidStateTransitionsFromVoting()
+    {
+        dataManager.heartbeat(T0, Steve, T2);
+
+        dataManager.submit(T1, Steve, Statement1, "all of western thought", T3, 100, 10, T3);
+
+        dataManager.beginVote(T2, Statement1, T4, 100, 50, 50);
+
+        validateSubmitNotValid(Statement1);
+        validateTimeoutNotValid(Statement1);
+        validateBeginVoteNotValid(Statement1);
+    }
+
+    @Test
+    public void invalidStateTransitionsFromAccepted()
+    {
+        dataManager.heartbeat(T0, Steve, T2);
+
+        dataManager.submit(T1, Steve, Statement1, "all of western thought", T3, 100, 10, T3);
+
+        dataManager.beginVote(T2, Statement1, T4, 100, 50, 50);
+
+        dataManager.endVoteAccepted(Statement1);
+
+        validateSubmitNotValid(Statement1);
+        validateTimeoutNotValid(Statement1);
+        validateBeginVoteNotValid(Statement1);
+        validateEndVoteAcceptedNotValid(Statement1);
+        validateEndVoteRejectedNotValid(Statement1);
+    }
+
+    @Test
+    public void invalidStateTransitionsFromRejected()
+    {
+        dataManager.heartbeat(T0, Steve, T2);
+
+        dataManager.submit(T1, Steve, Statement1, "all of western thought", T3, 100, 10, T3);
+
+        dataManager.beginVote(T2, Statement1, T4, 100, 50, 50);
+
+        dataManager.endVoteAccepted(Statement1);
+
+        validateSubmitNotValid(Statement1);
+        validateTimeoutNotValid(Statement1);
+        validateBeginVoteNotValid(Statement1);
+        validateEndVoteAcceptedNotValid(Statement1);
+        validateEndVoteRejectedNotValid(Statement1);
+    }
 }
