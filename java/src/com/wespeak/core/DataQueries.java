@@ -46,7 +46,7 @@ public interface DataQueries
     String   getOldestActiveStatementId();
 
     boolean  isSupported               (String userId, String statementId);
-    Vote getVote                   (String userId, String statementId);
+    Vote     getVote                   (String userId, String statementId);
 
     Iterator<String> getSubmittedStatementIds (String userId);
     Iterator<String> getSupportedStatementsIds(String userId);
