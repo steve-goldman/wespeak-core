@@ -32,6 +32,12 @@ public interface StatementsTable
     boolean  hasActiveStatements     ();
     String   getOldestActiveStatement();
 
+    Iterator<String> getInactiveStatements();
+    Iterator<String> getActiveStatements  ();
+    Iterator<String> getVotingStatements  ();
+    Iterator<String> getAcceptedStatements();
+    Iterator<String> getRejectedStatements();
+
     Iterator<String> getStatementIds (String userId);
 
     //

@@ -41,8 +41,12 @@ public class MemoryStatementsTable implements StatementsTable
         }
     }
 
-    private final Map<String, StatementData> statementsById   = new HashMap<String, StatementData>();
-    private final Queue<StatementData>       activeStatements = new LinkedList<StatementData>();
+    private final Map<String, StatementData> statementsById     = new HashMap<String, StatementData>();
+    private final Queue<StatementData>       activeStatements   = new LinkedList<StatementData>();
+    private final Queue<StatementData>       inactiveStatements = new LinkedList<StatementData>();
+    private final Queue<StatementData>       votingStatements   = new LinkedList<StatementData>();
+    private final Queue<StatementData>       acceptedStatements = new LinkedList<StatementData>();
+    private final Queue<StatementData>       rejectedStatements = new LinkedList<StatementData>();
 
     @Override
     public boolean exists(final String statementId)
@@ -134,9 +138,60 @@ public class MemoryStatementsTable implements StatementsTable
         return activeStatements.peek().statementId;
     }
 
+    private Iterator<String> makeIterator(final Queue<StatementData> queue)
+    {
+        final Iterator<StatementData> iter = queue.iterator();
+        return new Iterator<String>()
+        {
+            @Override
+            public boolean hasNext()
+            {
+                return iter.hasNext();
+            }
+
+            @Override
+            public String next()
+            {
+                return iter.next().statementId;
+            }
+        };
+    }
+
+    @Override
+    public Iterator<String> getInactiveStatements()
+    {
+        return makeIterator(inactiveStatements);
+    }
+
+    @Override
+    public Iterator<String> getActiveStatements()
+    {
+        return makeIterator(activeStatements);
+    }
+
+    @Override
+    public Iterator<String> getVotingStatements()
+    {
+        return makeIterator(votingStatements);
+    }
+
+    @Override
+    public Iterator<String> getAcceptedStatements()
+    {
+        return makeIterator(acceptedStatements);
+    }
+
+    @Override
+    public Iterator<String> getRejectedStatements()
+    {
+        return makeIterator(rejectedStatements);
+    }
+
     @Override
     public Iterator<String> getStatementIds(String userId)
     {
+        // TODO: this is broken
+
         final Iterator<StatementData> iter = activeStatements.iterator();
 
         return new Iterator<String>()
@@ -184,6 +239,7 @@ public class MemoryStatementsTable implements StatementsTable
         statementData.state = State.INACTIVE;
 
         activeStatements.remove(statementData);
+        inactiveStatements.add(statementData);
     }
 
     @Override
@@ -195,10 +251,10 @@ public class MemoryStatementsTable implements StatementsTable
                           final int    propYesesNeeded)
     {
         final StatementData statementData = statementsById.get(statementId);
-
         statementData.state = State.VOTING;
 
         activeStatements.remove(statementData);
+        votingStatements.add(statementData);
 
         statementData.voteBeginTime     = voteBeginTime;
         statementData.voteEndTime       = voteEndTime;
@@ -210,12 +266,20 @@ public class MemoryStatementsTable implements StatementsTable
     @Override
     public void endVoteAccepted(final String statementId)
     {
-        statementsById.get(statementId).state = State.ACCEPTED;
+        final StatementData statementData = statementsById.get(statementId);
+        statementData.state = State.ACCEPTED;
+
+        votingStatements.remove(statementData);
+        acceptedStatements.add(statementData);
     }
 
     @Override
     public void endVoteRejected(final String statementId)
     {
-        statementsById.get(statementId).state = State.REJECTED;
+        final StatementData statementData = statementsById.get(statementId);
+        statementData.state = State.REJECTED;
+
+        votingStatements.remove(statementData);
+        rejectedStatements.add(statementData);
     }
 }
