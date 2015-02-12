@@ -460,6 +460,36 @@ public class DataManager implements DataActions, DataQueries
         return votesTable.getVoted(userId);
     }
 
+    @Override
+    public Iterator<String> getInactiveStatementIds()
+    {
+        return statementsTable.getInactiveStatements();
+    }
+
+    @Override
+    public Iterator<String> getActiveStatementIds()
+    {
+        return statementsTable.getActiveStatements();
+    }
+
+    @Override
+    public Iterator<String> getVotingStatementIds()
+    {
+        return statementsTable.getVotingStatements();
+    }
+
+    @Override
+    public Iterator<String> getAcceptedStatementIds()
+    {
+        return statementsTable.getAcceptedStatements();
+    }
+
+    @Override
+    public Iterator<String> getRejectedStatementIds()
+    {
+        return statementsTable.getRejectedStatements();
+    }
+
     private void validateUserActive(final String userId)
     {
         if (!usersTable.isActive(userId))
