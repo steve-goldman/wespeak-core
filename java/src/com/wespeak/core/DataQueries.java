@@ -9,8 +9,10 @@ public interface DataQueries
     //
     // queries
     //
+    boolean  isUserExists              (String userId);
     boolean  isUserActive              (String userId);
 
+    boolean  isStatementExists         (String statementId);
     boolean  isStatementActive         (String statementId);
     boolean  isVoting                  (String statementId);
     boolean  isAccepted                (String statementId);

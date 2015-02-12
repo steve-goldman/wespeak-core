@@ -149,11 +149,23 @@ public class DataManager implements DataActions, DataQueries
     }
 
     @Override
+    public boolean isUserExists(final String userId)
+    {
+        return usersTable.exists(userId);
+    }
+
+    @Override
     public boolean isUserActive(final String userId)
     {
         validateUserExists(userId);
 
         return usersTable.isActive(userId);
+    }
+
+    @Override
+    public boolean isStatementExists(final String statementId)
+    {
+        return statementsTable.exists(statementId);
     }
 
     @Override
