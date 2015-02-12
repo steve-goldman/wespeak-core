@@ -25,10 +25,10 @@ public interface StatementsTable
     long     getVoteBeginTime        (String statementId);
     long     getVoteEndTime          (String statementId);
     int      getNumEligibleSupporters(String statementId);
-    int      getNumSupportNeeded     (String statementId);
+    int      getPropSupportNeeded    (String statementId);
     int      getNumEligibleVoters    (String statementId);
-    int      getNumVotesNeeded       (String statementId);
-    int      getNumYesesNeeded       (String statementId);
+    int      getPropVotesNeeded      (String statementId);
+    int      getPropYesesNeeded      (String statementId);
     boolean  hasActiveStatements     ();
     String   getOldestActiveStatement();
 
@@ -43,7 +43,7 @@ public interface StatementsTable
                                       long   submissionTime,
                                       long   expirationTime,
                                       int    numEligibleSupporters,
-                                      int    numSupportNeeded);
+                                      int    propSupportNeeded);
 
     void     setInactive             (String statementId);
 
@@ -51,8 +51,8 @@ public interface StatementsTable
                                       long   voteBeginTime,
                                       long   voteEndTime,
                                       int    numEligibleVoters,
-                                      int    numVotesNeeded,
-                                      int    numYesesNeeded);
+                                      int    propVotesNeeded,
+                                      int    propYesesNeeded);
 
     void     endVoteAccepted         (String statementId);
     void     endVoteRejected         (String statementId);

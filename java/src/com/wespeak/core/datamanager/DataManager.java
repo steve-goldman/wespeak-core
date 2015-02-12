@@ -48,7 +48,7 @@ public class DataManager implements DataActions, DataQueries
                        final String text,
                        final long statementActiveUntil,
                        final int numEligibleSupporters,
-                       final int numSupportNeeded,
+                       final int propSupportNeeded,
                        final long userActiveUntil)
     {
         validateUserExists(userId);
@@ -58,11 +58,11 @@ public class DataManager implements DataActions, DataQueries
 
         validateTimeOrdering(now, statementActiveUntil);
 
-        validateSupportCounts(numEligibleSupporters, numSupportNeeded);
+        validateSupportCounts(numEligibleSupporters, propSupportNeeded);
 
         usersTable.extendActive(userId, userActiveUntil);
 
-        statementsTable.addStatement(statementId, userId, text, now, statementActiveUntil, numEligibleSupporters, numSupportNeeded);
+        statementsTable.addStatement(statementId, userId, text, now, statementActiveUntil, numEligibleSupporters, propSupportNeeded);
     }
 
     @Override
@@ -108,8 +108,8 @@ public class DataManager implements DataActions, DataQueries
                           final String statementId,
                           final long   until,
                           final int    numEligibleVoters,
-                          final int    numVotesNeeded,
-                          final int    numYesesNeeded)
+                          final int    propVotesNeeded,
+                          final int    propYesesNeeded)
     {
         validateStatementExists(statementId);
 
@@ -117,7 +117,7 @@ public class DataManager implements DataActions, DataQueries
 
         validateTimeOrdering(now, until);
 
-        validateVoteCounts(numEligibleVoters, numVotesNeeded, numYesesNeeded);
+        validateVoteCounts(numEligibleVoters, propVotesNeeded, propYesesNeeded);
 
         final Iterator<String> iter = usersTable.getActiveUsers();
         while (iter.hasNext())
@@ -127,7 +127,7 @@ public class DataManager implements DataActions, DataQueries
 
         votesTable.beginVote(statementId);
 
-        statementsTable.beginVote(statementId, now, until, numEligibleVoters, numVotesNeeded, numYesesNeeded);
+        statementsTable.beginVote(statementId, now, until, numEligibleVoters, propVotesNeeded, propYesesNeeded);
     }
 
     @Override
@@ -313,7 +313,7 @@ public class DataManager implements DataActions, DataQueries
     }
 
     @Override
-    public int getNumSupport(final String statementId)
+    public int getSupportCount(final String statementId)
     {
         validateStatementExists(statementId);
 
@@ -321,11 +321,11 @@ public class DataManager implements DataActions, DataQueries
     }
 
     @Override
-    public int getNumSupportNeeded(final String statementId)
+    public int getPropSupportNeeded(final String statementId)
     {
         validateStatementExists(statementId);
 
-        return statementsTable.getNumSupportNeeded(statementId);
+        return statementsTable.getPropSupportNeeded(statementId);
     }
 
     @Override
@@ -339,7 +339,7 @@ public class DataManager implements DataActions, DataQueries
     }
 
     @Override
-    public int getNumVotes(final String statementId)
+    public int getVoteCount(final String statementId)
     {
         validateStatementExists(statementId);
 
@@ -349,17 +349,17 @@ public class DataManager implements DataActions, DataQueries
     }
 
     @Override
-    public int getNumVotesNeeded(final String statementId)
+    public int getPropVotesNeeded(final String statementId)
     {
         validateStatementExists(statementId);
 
         validateStatementIsOrEverVoted(statementId);
 
-        return statementsTable.getNumVotesNeeded(statementId);
+        return statementsTable.getPropVotesNeeded(statementId);
     }
 
     @Override
-    public int getNumYeses(final String statementId)
+    public int getYesCount(final String statementId)
     {
         validateStatementExists(statementId);
 
@@ -375,13 +375,13 @@ public class DataManager implements DataActions, DataQueries
     }
 
     @Override
-    public int getNumYesesNeeded(final String statementId)
+    public int getPropYesesNeeded(final String statementId)
     {
         validateStatementExists(statementId);
 
         validateStatementIsOrEverVoted(statementId);
 
-        return statementsTable.getNumYesesNeeded(statementId);
+        return statementsTable.getPropYesesNeeded(statementId);
     }
 
     @Override
@@ -484,11 +484,16 @@ public class DataManager implements DataActions, DataQueries
         }
     }
 
-    private void validateSupportCounts(final int numEligibleSupporters, final int numSupportNeeded)
+    private void validateSupportCounts(final int numEligibleSupporters, final int propSupportNeeded)
     {
-        if (numSupportNeeded > numEligibleSupporters)
+        if (numEligibleSupporters < 1)
         {
-            throw new IllegalArgumentException("numSupportNeeded:" + numSupportNeeded + " > numEligibleSupporters:" + numEligibleSupporters);
+            throw new IllegalArgumentException("invalid numEligibleSupporters:" + numEligibleSupporters);
+        }
+
+        if (propSupportNeeded < 0 || propSupportNeeded > 100)
+        {
+            throw new IllegalArgumentException("propSupportNeeded:" + propSupportNeeded + " out of range [0,100]");
         }
     }
 
@@ -513,21 +518,21 @@ public class DataManager implements DataActions, DataQueries
         }
     }
 
-    private void validateVoteCounts(final int numEligibleVoters, final int numVotesNeeded, final int numYesesNeeded)
+    private void validateVoteCounts(final int numEligibleVoters, final int propVotesNeeded, final int propYesesNeeded)
     {
-        if (numVotesNeeded > numEligibleVoters)
+        if (numEligibleVoters < 1)
         {
-            throw new IllegalArgumentException("numVotesNeeded:" + numVotesNeeded + " > numEligibleVoters:" + numEligibleVoters);
+            throw new IllegalArgumentException("invalid numEligibleVoters:" + numEligibleVoters);
         }
 
-        if (numYesesNeeded > numEligibleVoters)
+        if (propVotesNeeded < 0 || propVotesNeeded > 100)
         {
-            throw new IllegalArgumentException("numYesesNeeded:" + numYesesNeeded + " > numEligibleVoters:" + numEligibleVoters);
+            throw new IllegalArgumentException("propVotesNeeded:" + propVotesNeeded + " out of range [0,100]");
         }
 
-        if (numYesesNeeded > numVotesNeeded)
+        if (propYesesNeeded < 0 || propYesesNeeded > 100)
         {
-            throw new IllegalArgumentException("numYesesNeeded:" + numYesesNeeded + " > numVotesNeeded:" + numVotesNeeded);
+            throw new IllegalArgumentException("propYesesNeeded:" + propYesesNeeded + " out of range [0,100]");
         }
     }
 

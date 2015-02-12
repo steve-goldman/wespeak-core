@@ -30,13 +30,13 @@ public interface DataQueries
     boolean  canVote                   (String userId, String statementId);
 
     int      getNumEligibleSupporters  (String statementId);
-    int      getNumSupportNeeded       (String statementId);
-    int      getNumSupport             (String statementId);
+    int      getPropSupportNeeded      (String statementId);
+    int      getSupportCount           (String statementId);
     int      getNumEligibleVoters      (String statementId);
-    int      getNumVotesNeeded         (String statementId);
-    int      getNumVotes               (String statementId);
-    int      getNumYesesNeeded         (String statementId);
-    int      getNumYeses               (String statementId);
+    int      getPropVotesNeeded        (String statementId);
+    int      getVoteCount              (String statementId);
+    int      getPropYesesNeeded        (String statementId);
+    int      getYesCount               (String statementId);
 
     boolean  hasActiveUsers            ();
     String   getOldestActiveUserId     ();

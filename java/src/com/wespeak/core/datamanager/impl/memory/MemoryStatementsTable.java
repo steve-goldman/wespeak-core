@@ -14,14 +14,14 @@ public class MemoryStatementsTable implements StatementsTable
         final long   submissionTime;
         final long   expirationTime;
         final int    numEligibleSupporters;
-        final int    numSupportNeeded;
+        final int    propSupportNeeded;
 
         State state = State.ACTIVE;
         long  voteBeginTime;
         long  voteEndTime;
         int   numEligibleVoters;
-        int   numVotesNeeded;
-        int   numYesesNeeded;
+        int   propVotesNeeded;
+        int   propYesesNeeded;
 
         StatementData(final String statementId,
                       final String userId,
@@ -29,7 +29,7 @@ public class MemoryStatementsTable implements StatementsTable
                       final long   submissionTime,
                       final long   expirationTime,
                       final int    numEligibleSupporters,
-                      final int    numSupportNeeded)
+                      final int    propSupportNeeded)
         {
             this.statementId           = statementId;
             this.userId                = userId;
@@ -37,7 +37,7 @@ public class MemoryStatementsTable implements StatementsTable
             this.submissionTime        = submissionTime;
             this.expirationTime        = expirationTime;
             this.numEligibleSupporters = numEligibleSupporters;
-            this.numSupportNeeded      = numSupportNeeded;
+            this.propSupportNeeded     = propSupportNeeded;
         }
     }
 
@@ -99,9 +99,9 @@ public class MemoryStatementsTable implements StatementsTable
     }
 
     @Override
-    public int getNumSupportNeeded(final String statementId)
+    public int getPropSupportNeeded(final String statementId)
     {
-        return statementsById.get(statementId).numSupportNeeded;
+        return statementsById.get(statementId).propSupportNeeded;
     }
 
     @Override
@@ -111,15 +111,15 @@ public class MemoryStatementsTable implements StatementsTable
     }
 
     @Override
-    public int getNumVotesNeeded(final String statementId)
+    public int getPropVotesNeeded(final String statementId)
     {
-        return statementsById.get(statementId).numVotesNeeded;
+        return statementsById.get(statementId).propVotesNeeded;
     }
 
     @Override
-    public int getNumYesesNeeded(final String statementId)
+    public int getPropYesesNeeded(final String statementId)
     {
-        return statementsById.get(statementId).numYesesNeeded;
+        return statementsById.get(statementId).propYesesNeeded;
     }
 
     @Override
@@ -162,7 +162,7 @@ public class MemoryStatementsTable implements StatementsTable
                              final long submissionTime,
                              final long expirationTime,
                              final int numEligibleSupporters,
-                             final int numSupportNeeded)
+                             final int propSupportNeeded)
     {
         final StatementData statementData = new StatementData(
                 statementId,
@@ -171,7 +171,7 @@ public class MemoryStatementsTable implements StatementsTable
                 submissionTime,
                 expirationTime,
                 numEligibleSupporters,
-                numSupportNeeded);
+                propSupportNeeded);
 
         statementsById.put(statementId, statementData);
         activeStatements.add(statementData);
@@ -191,8 +191,8 @@ public class MemoryStatementsTable implements StatementsTable
                           final long voteBeginTime,
                           final long voteEndTime,
                           final int numEligibleVoters,
-                          final int numVotesNeeded,
-                          final int numYesesNeeded)
+                          final int propVotesNeeded,
+                          final int propYesesNeeded)
     {
         final StatementData statementData = statementsById.get(statementId);
 
@@ -203,8 +203,8 @@ public class MemoryStatementsTable implements StatementsTable
         statementData.voteBeginTime     = voteBeginTime;
         statementData.voteEndTime       = voteEndTime;
         statementData.numEligibleVoters = numEligibleVoters;
-        statementData.numVotesNeeded    = numVotesNeeded;
-        statementData.numYesesNeeded    = numYesesNeeded;
+        statementData.propVotesNeeded   = propVotesNeeded;
+        statementData.propYesesNeeded   = propYesesNeeded;
     }
 
     @Override

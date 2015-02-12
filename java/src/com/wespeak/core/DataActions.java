@@ -14,7 +14,7 @@ public interface DataActions
                    String text,
                    long statementActiveUntil,
                    int numEligibleSupporters,
-                   int numSupportNeeded,
+                   int propSupportNeeded,
                    long userActiveUntil);
 
     void support  (String userId, String statementId, long userActiveUntil);
@@ -34,8 +34,8 @@ public interface DataActions
                           String statementId,
                           long until,
                           int numEligibleVoters,
-                          int numVotesNeeded,
-                          int numYesesNeeded);
+                          int propVotesNeeded,
+                          int propYesesNeeded);
 
     void endVoteAccepted (String statementId);
 

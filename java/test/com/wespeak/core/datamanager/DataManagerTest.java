@@ -130,46 +130,46 @@ public class DataManagerTest
         Assert.assertEquals(T3 - T2, dataManager.getSubmissionTTL(T2, Statement1));
         Assert.assertEquals(0      , dataManager.getSubmissionTTL(T3, Statement1));
         Assert.assertEquals(100, dataManager.getNumEligibleSupporters(Statement1));
-        Assert.assertEquals(10,  dataManager.getNumSupportNeeded(Statement1));
+        Assert.assertEquals(10,  dataManager.getPropSupportNeeded(Statement1));
 
-        Assert.assertEquals(0, dataManager.getNumSupport(Statement1));
+        Assert.assertEquals(0, dataManager.getSupportCount(Statement1));
         Assert.assertTrue(dataManager.canSupport(Steve, Statement1));
         Assert.assertFalse(dataManager.isSupported(Steve, Statement1));
         dataManager.support(Steve, Statement1, T3);
         Assert.assertTrue(dataManager.isSupported(Steve, Statement1));
-        Assert.assertEquals(1, dataManager.getNumSupport(Statement1));
+        Assert.assertEquals(1, dataManager.getSupportCount(Statement1));
 
         dataManager.heartbeat(T2, Mike, T3);
         Assert.assertFalse(dataManager.canSupport(Mike, Statement1));
 
-        dataManager.beginVote(T3, Statement1, T4, 500, 200, 100);
+        dataManager.beginVote(T3, Statement1, T4, 500, 50, 60);
         Assert.assertFalse(dataManager.hasActiveStatements());
         Assert.assertFalse(dataManager.isStatementActive(Statement1));
         Assert.assertTrue(dataManager.isVoting(Statement1));
         Assert.assertFalse(dataManager.isAccepted(Statement1));
         Assert.assertFalse(dataManager.isRejected(Statement1));
         Assert.assertEquals(500, dataManager.getNumEligibleVoters(Statement1));
-        Assert.assertEquals(200, dataManager.getNumVotesNeeded(Statement1));
-        Assert.assertEquals(100, dataManager.getNumYesesNeeded(Statement1));
+        Assert.assertEquals(50, dataManager.getPropVotesNeeded(Statement1));
+        Assert.assertEquals(60, dataManager.getPropYesesNeeded(Statement1));
         Assert.assertEquals(T3, dataManager.getVoteBeginTime(Statement1));
         Assert.assertEquals(T4 - T3, dataManager.getVoteTTL(T3, Statement1));
         Assert.assertEquals(0      , dataManager.getVoteTTL(T4, Statement1));
 
-        Assert.assertEquals(0, dataManager.getNumVotes(Statement1));
+        Assert.assertEquals(0, dataManager.getVoteCount(Statement1));
 
         Assert.assertTrue(dataManager.canVote(Steve, Statement1));
         Assert.assertEquals(Vote.ABSTAIN, dataManager.getVote(Steve, Statement1));
         dataManager.vote(Steve, Statement1, Vote.YES, T4);
         Assert.assertEquals(Vote.YES, dataManager.getVote(Steve, Statement1));
-        Assert.assertEquals(1, dataManager.getNumVotes(Statement1));
-        Assert.assertEquals(1, dataManager.getNumYeses(Statement1));
+        Assert.assertEquals(1, dataManager.getVoteCount(Statement1));
+        Assert.assertEquals(1, dataManager.getYesCount(Statement1));
 
         Assert.assertTrue(dataManager.canVote(Mike, Statement1));
         Assert.assertEquals(Vote.ABSTAIN, dataManager.getVote(Mike, Statement1));
         dataManager.vote(Mike, Statement1, Vote.NO, T4);
         Assert.assertEquals(Vote.NO, dataManager.getVote(Mike, Statement1));
-        Assert.assertEquals(2, dataManager.getNumVotes(Statement1));
-        Assert.assertEquals(1, dataManager.getNumYeses(Statement1));
+        Assert.assertEquals(2, dataManager.getVoteCount(Statement1));
+        Assert.assertEquals(1, dataManager.getYesCount(Statement1));
 
         dataManager.heartbeat(T4, Ssor, T5);
         Assert.assertFalse(dataManager.canVote(Ssor, Statement1));
