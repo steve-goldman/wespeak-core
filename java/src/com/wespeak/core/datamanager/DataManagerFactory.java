@@ -1,8 +1,5 @@
-package com.wespeak.core.datamanager.impl;
+package com.wespeak.core.datamanager;
 
-import com.wespeak.core.datamanager.DataManager;
-import com.wespeak.core.datamanager.DataManagerImpl;
-import com.wespeak.core.datamanager.DataManagerType;
 import com.wespeak.core.datamanager.impl.memory.MemoryStatementsTable;
 import com.wespeak.core.datamanager.impl.memory.MemorySupportTable;
 import com.wespeak.core.datamanager.impl.memory.MemoryUsersTable;
@@ -23,7 +20,7 @@ public class DataManagerFactory
         {
             case MEMORY:
             {
-                return new DataManagerImpl(
+                return new DataManager(
                         new MemoryUsersTable(),
                         new MemoryStatementsTable(),
                         new MemorySupportTable(),

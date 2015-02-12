@@ -13,10 +13,10 @@ public class DataManager implements DataActions, DataQueries
     private final SupportTable    supportTable;
     private final VotesTable      votesTable;
 
-    public DataManager(final UsersTable      usersTable,
-                       final StatementsTable statementsTable,
-                       final SupportTable    supportTable,
-                       final VotesTable      votesTable)
+    DataManager(final UsersTable      usersTable,
+                final StatementsTable statementsTable,
+                final SupportTable    supportTable,
+                final VotesTable      votesTable)
     {
         this.usersTable      = usersTable;
         this.statementsTable = statementsTable;
