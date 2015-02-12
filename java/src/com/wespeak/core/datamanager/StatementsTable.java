@@ -38,7 +38,7 @@ public interface StatementsTable
     Iterator<String> getAcceptedStatements();
     Iterator<String> getRejectedStatements();
 
-    Iterator<String> getStatementIds (String userId);
+    Iterator<String> getUserStatementIds  (String userId);
 
     //
     // setters

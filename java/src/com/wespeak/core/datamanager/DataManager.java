@@ -437,7 +437,7 @@ public class DataManager implements DataActions, DataQueries
 
         // user does not need to be active for this
 
-        return statementsTable.getStatementIds(userId);
+        return statementsTable.getUserStatementIds(userId);
     }
 
     @Override

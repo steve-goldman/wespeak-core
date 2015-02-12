@@ -188,11 +188,21 @@ public class MemoryStatementsTable implements StatementsTable
     }
 
     @Override
-    public Iterator<String> getStatementIds(String userId)
+    public Iterator<String> getUserStatementIds(final String userId)
     {
-        // TODO: this is broken
+        // nextIter stays one ahead of iter and always points at a record submitted by userId
+        final Iterator<String> nextIter = statementsById.keySet().iterator();
+        final Iterator<String> iter     = statementsById.keySet().iterator();
 
-        final Iterator<StatementData> iter = activeStatements.iterator();
+        while (nextIter.hasNext())
+        {
+            final StatementData statementData = statementsById.get(nextIter.next());
+            if (userId.equals(statementData.userId))
+            {
+                break;
+            }
+            iter.next();
+        }
 
         return new Iterator<String>()
         {
@@ -205,7 +215,20 @@ public class MemoryStatementsTable implements StatementsTable
             @Override
             public String next()
             {
-                return iter.next().statementId;
+                final String statementId = iter.next();
+
+                // now nextIter and iter are at the same place
+                while (nextIter.hasNext())
+                {
+                    final StatementData statementData = statementsById.get(nextIter.next());
+                    if (userId.equals(statementData.userId))
+                    {
+                        break;
+                    }
+                    iter.next();
+                }
+
+                return statementId;
             }
         };
     }
