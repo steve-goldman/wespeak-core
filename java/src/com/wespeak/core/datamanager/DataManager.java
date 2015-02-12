@@ -6,17 +6,17 @@ import com.wespeak.core.Vote;
 
 import java.util.Iterator;
 
-public class DataManagerImpl implements DataActions, DataQueries
+public class DataManager implements DataActions, DataQueries
 {
     private final UsersTable      usersTable;
     private final StatementsTable statementsTable;
     private final SupportTable    supportTable;
     private final VotesTable      votesTable;
 
-    public DataManagerImpl(final UsersTable      usersTable,
-                           final StatementsTable statementsTable,
-                           final SupportTable    supportTable,
-                           final VotesTable      votesTable)
+    public DataManager(final UsersTable      usersTable,
+                       final StatementsTable statementsTable,
+                       final SupportTable    supportTable,
+                       final VotesTable      votesTable)
     {
         this.usersTable      = usersTable;
         this.statementsTable = statementsTable;
