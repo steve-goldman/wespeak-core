@@ -53,8 +53,6 @@ public class DataManager implements DataActions, DataQueries
     {
         validateUserExists(userId);
 
-        validateUserActive(userId);
-
         // statement must NOT already exist
         validateStatementExists(statementId, false);
 
