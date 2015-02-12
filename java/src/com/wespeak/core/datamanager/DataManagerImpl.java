@@ -277,9 +277,7 @@ public class DataManagerImpl implements DataManager
 
         validateStatementVoting(statementId);
 
-        validateUserEligibleToVote(userId, statementId);
-
-        return getUserActiveTime(userId) < getVoteBeginTime(statementId);
+        return votesTable.eligible(userId, statementId);
     }
 
     @Override
