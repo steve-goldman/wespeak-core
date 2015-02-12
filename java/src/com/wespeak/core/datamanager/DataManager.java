@@ -503,7 +503,7 @@ public class DataManager implements DataActions, DataQueries
     {
         if (statementsTable.exists(statementId) != exists)
         {
-            throw new IllegalArgumentException("statement:" + statementId + (exists ? " does not exist" : "exists"));
+            throw new IllegalStateException("statement:" + statementId + (exists ? " does not exist" : "exists"));
         }
     }
 
