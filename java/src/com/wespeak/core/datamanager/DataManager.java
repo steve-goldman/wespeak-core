@@ -42,14 +42,14 @@ public class DataManager implements DataActions, DataQueries
     }
 
     @Override
-    public void submit(final long now,
+    public void submit(final long   now,
                        final String userId,
                        final String statementId,
                        final String text,
-                       final long statementActiveUntil,
-                       final int numEligibleSupporters,
-                       final int propSupportNeeded,
-                       final long userActiveUntil)
+                       final long   statementActiveUntil,
+                       final int    numEligibleSupporters,
+                       final int    propSupportNeeded,
+                       final long   userActiveUntil)
     {
         validateUserExists(userId);
 

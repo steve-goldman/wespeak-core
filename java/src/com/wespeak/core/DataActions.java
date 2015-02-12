@@ -8,14 +8,14 @@ public interface DataActions
 
     void heartbeat(long now, String userId, long userActiveUntil);
 
-    void submit   (long now,
+    void submit   (long   now,
                    String userId,
                    String statementId,
                    String text,
-                   long statementActiveUntil,
-                   int numEligibleSupporters,
-                   int propSupportNeeded,
-                   long userActiveUntil);
+                   long   statementActiveUntil,
+                   int    numEligibleSupporters,
+                   int    propSupportNeeded,
+                   long   userActiveUntil);
 
     void support  (String userId, String statementId, long userActiveUntil);
 
@@ -30,12 +30,12 @@ public interface DataActions
 
     void timeoutStatement(String statementId);
 
-    void beginVote       (long now,
+    void beginVote       (long   now,
                           String statementId,
-                          long until,
-                          int numEligibleVoters,
-                          int propVotesNeeded,
-                          int propYesesNeeded);
+                          long   until,
+                          int    numEligibleVoters,
+                          int    propVotesNeeded,
+                          int    propYesesNeeded);
 
     void endVoteAccepted (String statementId);
 

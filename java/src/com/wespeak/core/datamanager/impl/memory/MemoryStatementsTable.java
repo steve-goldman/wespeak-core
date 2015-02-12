@@ -159,10 +159,10 @@ public class MemoryStatementsTable implements StatementsTable
     public void addStatement(final String statementId,
                              final String userId,
                              final String text,
-                             final long submissionTime,
-                             final long expirationTime,
-                             final int numEligibleSupporters,
-                             final int propSupportNeeded)
+                             final long   submissionTime,
+                             final long   expirationTime,
+                             final int    numEligibleSupporters,
+                             final int    propSupportNeeded)
     {
         final StatementData statementData = new StatementData(
                 statementId,
@@ -188,15 +188,15 @@ public class MemoryStatementsTable implements StatementsTable
 
     @Override
     public void beginVote(final String statementId,
-                          final long voteBeginTime,
-                          final long voteEndTime,
-                          final int numEligibleVoters,
-                          final int propVotesNeeded,
-                          final int propYesesNeeded)
+                          final long   voteBeginTime,
+                          final long   voteEndTime,
+                          final int    numEligibleVoters,
+                          final int    propVotesNeeded,
+                          final int    propYesesNeeded)
     {
         final StatementData statementData = statementsById.get(statementId);
 
-        statementData.state             = State.VOTING;
+        statementData.state = State.VOTING;
 
         activeStatements.remove(statementData);
 
