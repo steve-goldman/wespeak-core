@@ -158,15 +158,15 @@ public class MemoryStatementsTable implements StatementsTable
     }
 
     @Override
-    public Iterator<String> getInactiveStatements()
-    {
-        return makeIterator(inactiveStatements);
-    }
-
-    @Override
     public Iterator<String> getActiveStatements()
     {
         return makeIterator(activeStatements);
+    }
+
+    @Override
+    public Iterator<String> getInactiveStatements()
+    {
+        return makeIterator(inactiveStatements);
     }
 
     @Override

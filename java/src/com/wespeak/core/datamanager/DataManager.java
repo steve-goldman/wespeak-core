@@ -461,15 +461,15 @@ public class DataManager implements DataActions, DataQueries
     }
 
     @Override
-    public Iterator<String> getInactiveStatementIds()
-    {
-        return statementsTable.getInactiveStatements();
-    }
-
-    @Override
     public Iterator<String> getActiveStatementIds()
     {
         return statementsTable.getActiveStatements();
+    }
+
+    @Override
+    public Iterator<String> getInactiveStatementIds()
+    {
+        return statementsTable.getInactiveStatements();
     }
 
     @Override

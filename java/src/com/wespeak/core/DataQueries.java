@@ -50,8 +50,8 @@ public interface DataQueries
     Iterator<String> getSupportedStatementsIds(String userId);
     Iterator<String> getVotedStatementIds     (String userId);
 
-    Iterator<String> getInactiveStatementIds  ();
     Iterator<String> getActiveStatementIds    ();
+    Iterator<String> getInactiveStatementIds  ();
     Iterator<String> getVotingStatementIds    ();
     Iterator<String> getAcceptedStatementIds  ();
     Iterator<String> getRejectedStatementIds  ();
