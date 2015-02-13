@@ -294,7 +294,7 @@ public class DataManager implements DataActions, DataQueries
 
         validateStatementVoting(statementId);
 
-        return votesTable.eligible(userId, statementId);
+        return votesTable.eligible(userId, statementId) && votesTable.getVote(userId, statementId) == Vote.ABSTAIN;
     }
 
     @Override
