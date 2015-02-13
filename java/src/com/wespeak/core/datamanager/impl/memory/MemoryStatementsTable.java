@@ -43,11 +43,11 @@ public class MemoryStatementsTable implements StatementsTable
     }
 
     private final Map<String, StatementData> statementsById     = new LinkedHashMap<String, StatementData>();
-    private final Queue<StatementData>       activeStatements   = new LinkedList<StatementData>();
-    private final Queue<StatementData>       inactiveStatements = new LinkedList<StatementData>();
-    private final Queue<StatementData>       votingStatements   = new LinkedList<StatementData>();
-    private final Queue<StatementData>       acceptedStatements = new LinkedList<StatementData>();
-    private final Queue<StatementData>       rejectedStatements = new LinkedList<StatementData>();
+    private final Deque<StatementData>       activeStatements   = new LinkedList<StatementData>();
+    private final Deque<StatementData>       inactiveStatements = new LinkedList<StatementData>();
+    private final Deque<StatementData>       votingStatements   = new LinkedList<StatementData>();
+    private final Deque<StatementData>       acceptedStatements = new LinkedList<StatementData>();
+    private final Deque<StatementData>       rejectedStatements = new LinkedList<StatementData>();
 
     @Override
     public boolean exists(final String statementId)
@@ -136,7 +136,7 @@ public class MemoryStatementsTable implements StatementsTable
     @Override
     public String getOldestActiveStatement()
     {
-        return activeStatements.peek().statementId;
+        return activeStatements.peekLast().statementId;
     }
 
     private Iterator<String> makeIterator(final Queue<StatementData> queue)
@@ -253,7 +253,7 @@ public class MemoryStatementsTable implements StatementsTable
                 propSupportNeeded);
 
         statementsById.put(statementId, statementData);
-        activeStatements.add(statementData);
+        activeStatements.addFirst(statementData);
     }
 
     @Override
@@ -263,7 +263,7 @@ public class MemoryStatementsTable implements StatementsTable
         statementData.state = StatementState.INACTIVE;
 
         activeStatements.remove(statementData);
-        inactiveStatements.add(statementData);
+        inactiveStatements.addFirst(statementData);
     }
 
     @Override
@@ -278,7 +278,7 @@ public class MemoryStatementsTable implements StatementsTable
         statementData.state = StatementState.VOTING;
 
         activeStatements.remove(statementData);
-        votingStatements.add(statementData);
+        votingStatements.addFirst(statementData);
 
         statementData.voteBeginTime     = voteBeginTime;
         statementData.voteEndTime       = voteEndTime;
@@ -294,7 +294,7 @@ public class MemoryStatementsTable implements StatementsTable
         statementData.state = StatementState.ACCEPTED;
 
         votingStatements.remove(statementData);
-        acceptedStatements.add(statementData);
+        acceptedStatements.addFirst(statementData);
     }
 
     @Override
@@ -304,6 +304,6 @@ public class MemoryStatementsTable implements StatementsTable
         statementData.state = StatementState.REJECTED;
 
         votingStatements.remove(statementData);
-        rejectedStatements.add(statementData);
+        rejectedStatements.addFirst(statementData);
     }
 }
