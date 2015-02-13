@@ -19,7 +19,7 @@ public interface DataActions
 
     void support  (String userId, String statementId, long userActiveUntil);
 
-    void vote     (String userId, String statementId, Vote vote, long userActiveUntil);
+    void vote     (long now, String userId, String statementId, Vote vote, long userActiveUntil);
 
 
     //

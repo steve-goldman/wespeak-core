@@ -77,11 +77,18 @@ public class DataManager implements DataActions, DataQueries
     }
 
     @Override
-    public void vote(final String userId, final String statementId, final Vote vote, final long userActiveUntil)
+    public void vote(final long now, final String userId, final String statementId, final Vote vote, final long userActiveUntil)
     {
         // pre-conditions are validated in canVote, which the client must call
 
-        usersTable.extendActive(userId, userActiveUntil);
+        if (usersTable.isActive(userId))
+        {
+            usersTable.extendActive(userId, userActiveUntil);
+        }
+        else
+        {
+            usersTable.setActive(userId, now, userActiveUntil);
+        }
 
         votesTable.vote(userId, statementId, vote);
     }
