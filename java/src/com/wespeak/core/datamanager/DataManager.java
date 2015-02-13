@@ -288,7 +288,7 @@ public class DataManager implements DataActions, DataQueries
     {
         validateUserExists(userId);
 
-        validateUserActive(userId);
+        // the user does not need to be active (in case she was active before the vote began)
 
         validateStatementExists(statementId);
 
