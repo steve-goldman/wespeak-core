@@ -278,7 +278,9 @@ public class DataManager implements DataActions, DataQueries
 
         validateStatementActive(statementId);
 
-        return getUserActiveTime(userId) < getSubmissionTime(statementId);
+        validateUserNotSupports(userId, statementId);
+
+        return usersTable.getActiveTime(userId) <= statementsTable.getSubmissionTime(statementId);
     }
 
     @Override
