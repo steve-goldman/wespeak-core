@@ -61,7 +61,14 @@ public class DataManager implements DataActions, DataQueries
 
         validateSupportCounts(numEligibleSupporters, propSupportNeeded);
 
-        usersTable.extendActive(userId, userActiveUntil);
+        if (usersTable.isActive(userId))
+        {
+            usersTable.extendActive(userId, userActiveUntil);
+        }
+        else
+        {
+            usersTable.setActive(userId, now, userActiveUntil);
+        }
 
         statementsTable.addStatement(statementId, userId, text, now, statementActiveUntil, numEligibleSupporters, propSupportNeeded);
     }
@@ -574,6 +581,14 @@ public class DataManager implements DataActions, DataQueries
         if (!votesTable.eligible(userId, statementId))
         {
             throw new IllegalStateException("user:" + userId + " is/was not eligible to vote on statementId:" + statementId);
+        }
+    }
+
+    private void validateUserNotSupports(final String userId, final String statementId)
+    {
+        if (supportTable.supports(userId, statementId))
+        {
+            throw new IllegalStateException("user:" + userId + "already supports statementId:" + statementId);
         }
     }
 }
