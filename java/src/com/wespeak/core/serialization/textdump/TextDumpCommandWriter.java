@@ -1,9 +1,7 @@
-package com.wespeak.core.commands.io.textdump;
+package com.wespeak.core.serialization.textdump;
 
 import com.wespeak.core.Vote;
-import com.wespeak.core.commands.CommandHandler;
-import com.wespeak.core.serialization.textdump.TextDumpConstants;
-import com.wespeak.core.serialization.textdump.TextDumpWriter;
+import com.wespeak.core.CommandHandler;
 
 import java.io.File;
 import java.io.IOException;

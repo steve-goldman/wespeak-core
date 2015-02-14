@@ -1,6 +1,4 @@
-package com.wespeak.core.commands;
-
-import com.wespeak.core.Vote;
+package com.wespeak.core;
 
 public interface CommandHandler
 {

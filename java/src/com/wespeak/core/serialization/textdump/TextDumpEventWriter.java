@@ -1,8 +1,6 @@
-package com.wespeak.core.events.io.textdump;
+package com.wespeak.core.serialization.textdump;
 
-import com.wespeak.core.commands.io.textdump.TextDumpCommandWriter;
-import com.wespeak.core.events.EventHandler;
-import com.wespeak.core.serialization.textdump.TextDumpConstants;
+import com.wespeak.core.EventHandler;
 
 import java.io.File;
 import java.io.IOException;

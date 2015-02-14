@@ -1,6 +1,4 @@
-package com.wespeak.core.events;
-
-import com.wespeak.core.commands.CommandHandler;
+package com.wespeak.core;
 
 public interface EventHandler extends CommandHandler
 {

@@ -1,7 +1,5 @@
 package com.wespeak.core.serialization.textdump;
 
-import com.wespeak.core.events.io.textdump.TextDumpEventReader;
-import com.wespeak.core.events.io.textdump.TextDumpEventWriter;
 import org.junit.Assert;
 import org.junit.Test;
 

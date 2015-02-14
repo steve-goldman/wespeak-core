@@ -1,9 +1,7 @@
-package com.wespeak.core.commands.io.textdump;
+package com.wespeak.core.serialization.textdump;
 
 import com.wespeak.core.Vote;
-import com.wespeak.core.commands.CommandHandler;
-import com.wespeak.core.serialization.textdump.TextDumpConstants;
-import com.wespeak.core.serialization.textdump.TextDumpReader;
+import com.wespeak.core.CommandHandler;
 
 import java.io.*;
 import java.util.regex.Pattern;

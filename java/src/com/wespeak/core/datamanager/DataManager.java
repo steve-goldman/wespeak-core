@@ -3,7 +3,7 @@ package com.wespeak.core.datamanager;
 import com.wespeak.core.DataQueries;
 import com.wespeak.core.StatementState;
 import com.wespeak.core.Vote;
-import com.wespeak.core.events.EventHandler;
+import com.wespeak.core.EventHandler;
 
 import java.util.Iterator;
 
