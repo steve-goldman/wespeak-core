@@ -1,4 +1,4 @@
-package com.wespeak.core.serialization.textdump;
+package com.wespeak.core.io.textdump;
 
 import java.io.BufferedWriter;
 import java.io.File;

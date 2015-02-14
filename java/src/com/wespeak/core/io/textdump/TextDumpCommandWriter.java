@@ -1,4 +1,4 @@
-package com.wespeak.core.serialization.textdump;
+package com.wespeak.core.io.textdump;
 
 import com.wespeak.core.Vote;
 import com.wespeak.core.CommandHandler;
