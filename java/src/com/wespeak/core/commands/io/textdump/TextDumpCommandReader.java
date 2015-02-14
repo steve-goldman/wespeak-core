@@ -6,6 +6,7 @@ import com.wespeak.core.serialization.textdump.TextDumpConstants;
 import com.wespeak.core.serialization.textdump.TextDumpReader;
 
 import java.io.*;
+import java.util.regex.Pattern;
 
 public class TextDumpCommandReader extends TextDumpReader
 {
@@ -39,31 +40,33 @@ public class TextDumpCommandReader extends TextDumpReader
     {
         try
         {
+            final String[] tokens = line.split(Pattern.quote(TextDumpConstants.Separator));
+
             // check for heartbeat
-            if (line.startsWith(TextDumpConstants.CommandTypes.Heartbeat))
+            if (TextDumpConstants.CommandTypes.Heartbeat.equals(tokens[0]))
             {
-                handleHeartbeat(line);
+                handleHeartbeat(tokens);
                 return true;
             }
 
             // check for submit
-            if (line.startsWith(TextDumpConstants.CommandTypes.Submit))
+            if (TextDumpConstants.CommandTypes.Submit.equals(tokens[0]))
             {
-                handleSubmit(line);
+                handleSubmit(tokens);
                 return true;
             }
 
             // check for support
-            if (line.startsWith(TextDumpConstants.CommandTypes.Support))
+            if (TextDumpConstants.CommandTypes.Support.equals(tokens[0]))
             {
-                handleSupport(line);
+                handleSupport(tokens);
                 return true;
             }
 
             // check for vote
-            if (line.startsWith(TextDumpConstants.CommandTypes.Vote))
+            if (TextDumpConstants.CommandTypes.Vote.equals(tokens[0]))
             {
-                handleVote(line);
+                handleVote(tokens);
                 return true;
             }
 
@@ -75,10 +78,8 @@ public class TextDumpCommandReader extends TextDumpReader
         }
     }
 
-    private void handleHeartbeat(final String line) throws Exception
+    private void handleHeartbeat(final String[] tokens) throws Exception
     {
-        final String[] tokens = line.split(TextDumpConstants.Separator);
-
         final long   now             = TextDumpConstants.stringToTime(tokens[1]);
         final String userId          = tokens[2];
         final long   userActiveUntil = TextDumpConstants.stringToTime(tokens[3]);
@@ -86,10 +87,8 @@ public class TextDumpCommandReader extends TextDumpReader
         commandHandler.heartbeat(now, userId, userActiveUntil);
     }
 
-    private void handleSubmit(final String line) throws Exception
+    private void handleSubmit(final String[] tokens) throws Exception
     {
-        final String tokens[] = line.split(TextDumpConstants.Separator);
-
         final long   now                   = TextDumpConstants.stringToTime(tokens[1]);
         final String userId                = tokens[2];
         final String statementId           = tokens[3];
@@ -107,21 +106,18 @@ public class TextDumpCommandReader extends TextDumpReader
         commandHandler.submit(now, userId, statementId, new String(text), statementActiveUntil, numEligibleSupporters, propSupportNeeded, userActiveUntil);
     }
 
-    private void handleSupport(final String line) throws Exception
+    private void handleSupport(final String[] tokens) throws Exception
     {
-        final String[] tokens = line.split(TextDumpConstants.Separator);
+        final long   now             = TextDumpConstants.stringToTime(tokens[1]);
+        final String userId          = tokens[2];
+        final String statementId     = tokens[3];
+        final long   userActiveUntil = TextDumpConstants.stringToTime(tokens[4]);
 
-        final String userId          = tokens[1];
-        final String statementId     = tokens[2];
-        final long   userActiveUntil = TextDumpConstants.stringToTime(tokens[3]);
-
-        commandHandler.support(0, userId, statementId, userActiveUntil);
+        commandHandler.support(now, userId, statementId, userActiveUntil);
     }
 
-    private void handleVote(final String line) throws Exception
+    private void handleVote(final String[] tokens) throws Exception
     {
-        final String[] tokens = line.split(TextDumpConstants.Separator);
-
         final long   now             = TextDumpConstants.stringToTime(tokens[1]);
         final String userId          = tokens[2];
         final String statementId     = tokens[3];

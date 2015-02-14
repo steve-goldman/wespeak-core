@@ -50,4 +50,9 @@ public class TextDumpWriter
             e.printStackTrace();
         }
     }
+
+    public void flush() throws IOException
+    {
+        writer.flush();
+    }
 }

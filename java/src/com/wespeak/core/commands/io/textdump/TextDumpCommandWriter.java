@@ -41,7 +41,8 @@ public class TextDumpCommandWriter extends TextDumpWriter implements CommandHand
                 TextDumpConstants.timeToString(statementActiveUntil),
                 "" + numEligibleSupporters,
                 "" + propSupportNeeded,
-                TextDumpConstants.timeToString(userActiveUntil));
+                TextDumpConstants.timeToString(userActiveUntil),
+                "" + text.length());
 
         writeStatement(text);
     }

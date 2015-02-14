@@ -62,5 +62,4 @@ public class TextDumpEventWriter extends TextDumpCommandWriter implements EventH
                 TextDumpConstants.timeToString(now),
                 statementId);
     }
-
 }

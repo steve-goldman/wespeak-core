@@ -6,6 +6,7 @@ import com.wespeak.core.serialization.textdump.TextDumpConstants;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.regex.Pattern;
 
 public class TextDumpEventReader extends TextDumpCommandReader
 {
@@ -22,38 +23,40 @@ public class TextDumpEventReader extends TextDumpCommandReader
     {
         try
         {
+            final String[] tokens = line.split(Pattern.quote(TextDumpConstants.Separator));
+
             // check for timeout user
-            if (line.startsWith(TextDumpConstants.EventTypes.TimeoutUser))
+            if (TextDumpConstants.EventTypes.TimeoutUser.equals(tokens[0]))
             {
-                handleTimeoutUser(line);
+                handleTimeoutUser(tokens);
                 return true;
             }
 
             // check for timeout statement
-            if (line.startsWith(TextDumpConstants.EventTypes.TimeoutStatement))
+            if (TextDumpConstants.EventTypes.TimeoutStatement.equals(tokens[0]))
             {
-                handleTimeoutStatement(line);
+                handleTimeoutStatement(tokens);
                 return true;
             }
 
             // check for begin vote
-            if (line.startsWith(TextDumpConstants.EventTypes.BeginVote))
+            if (TextDumpConstants.EventTypes.BeginVote.equals(tokens[0]))
             {
-                handleBeginVote(line);
+                handleBeginVote(tokens);
                 return true;
             }
 
             // check for end vote accepted
-            if (line.startsWith(TextDumpConstants.EventTypes.EndVoteAccepted))
+            if (TextDumpConstants.EventTypes.EndVoteAccepted.equals(tokens[0]))
             {
-                handleEndVoteAccepted(line);
+                handleEndVoteAccepted(tokens);
                 return true;
             }
 
             // check for end vote rejected
-            if (line.startsWith(TextDumpConstants.EventTypes.EndVoteRejected))
+            if (TextDumpConstants.EventTypes.EndVoteRejected.equals(tokens[0]))
             {
-                handleEndVoteRejected(line);
+                handleEndVoteRejected(tokens);
                 return true;
             }
 
@@ -65,28 +68,24 @@ public class TextDumpEventReader extends TextDumpCommandReader
         }
     }
 
-    private void handleTimeoutUser(final String line) throws Exception
+    private void handleTimeoutUser(final String[] tokens) throws Exception
     {
-        final String[] tokens = line.split(TextDumpConstants.Separator);
+        final long   now    = TextDumpConstants.stringToTime(tokens[1]);
+        final String userId = tokens[2];
 
-        final String userId = tokens[1];
-
-        eventHandler.timeoutUser(0, userId);
+        eventHandler.timeoutUser(now, userId);
     }
 
-    private void handleTimeoutStatement(final String line) throws Exception
+    private void handleTimeoutStatement(final String[] tokens) throws Exception
     {
-        final String[] tokens = line.split(TextDumpConstants.Separator);
+        final long   now         = TextDumpConstants.stringToTime(tokens[1]);
+        final String statementId = tokens[2];
 
-        final String statementId = tokens[1];
-
-        eventHandler.timeoutStatement(0, statementId);
+        eventHandler.timeoutStatement(now, statementId);
     }
 
-    private void handleBeginVote(final String line) throws Exception
+    private void handleBeginVote(final String[] tokens) throws Exception
     {
-        final String[] tokens = line.split(TextDumpConstants.Separator);
-
         final long   now               = TextDumpConstants.stringToTime(tokens[1]);
         final String statementId       = tokens[2];
         final long   until             = TextDumpConstants.stringToTime(tokens[3]);
@@ -97,22 +96,20 @@ public class TextDumpEventReader extends TextDumpCommandReader
         eventHandler.beginVote(now, statementId, until, numEligibleVoters, propVotesNeeded, propYesesNeeded);
     }
 
-    private void handleEndVoteAccepted(final String line) throws Exception
+    private void handleEndVoteAccepted(final String[] tokens) throws Exception
     {
-        final String[] tokens = line.split(TextDumpConstants.Separator);
+        final long   now         = TextDumpConstants.stringToTime(tokens[1]);
+        final String statementId = tokens[2];
 
-        final String statementId = tokens[1];
-
-        eventHandler.endVoteAccepted(0, statementId);
+        eventHandler.endVoteAccepted(now, statementId);
     }
 
-    private void handleEndVoteRejected(final String line) throws Exception
+    private void handleEndVoteRejected(final String[] tokens) throws Exception
     {
-        final String[] tokens = line.split(TextDumpConstants.Separator);
+        final long   now         = TextDumpConstants.stringToTime(tokens[1]);
+        final String statementId = tokens[2];
 
-        final String statementId = tokens[1];
-
-        eventHandler.endVoteRejected(0, statementId);
+        eventHandler.endVoteRejected(now, statementId);
     }
 
 
