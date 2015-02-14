@@ -1,0 +1,2 @@
+vote|2015-02-14 00:17:12.080 -0500|steve|statement1|YES
+vote|2015-02-14 00:17:12.080 -0500|mike|statement1|NO

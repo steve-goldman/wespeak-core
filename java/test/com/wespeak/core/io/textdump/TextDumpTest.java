@@ -30,9 +30,28 @@ public class TextDumpTest
         return false;
     }
 
-    private void runFile(final File inputFile) throws IOException
+    private void runCommandFile(final File inputFile) throws IOException
     {
-        final File outputFile = File.createTempFile("textDumpTest", null, new File("/tmp"));
+        final File outputFile = File.createTempFile("textDumpCommandTest", null, new File("/tmp"));
+
+        System.out.println("input  file: " + inputFile.getPath());
+        System.out.println("output file: " + outputFile.getPath());
+
+        final TextDumpCommandWriter writer = new TextDumpCommandWriter(outputFile);
+        final TextDumpCommandReader reader = new TextDumpCommandReader(inputFile, writer);
+
+        while (reader.hasNext())
+        {
+            reader.readNext();
+        }
+        writer.flush();
+
+        Assert.assertTrue(cleanDiff(new FileInputStream(inputFile), new FileInputStream(outputFile)));
+    }
+
+    private void runEventFile(final File inputFile) throws IOException
+    {
+        final File outputFile = File.createTempFile("textDumpEventTest", null, new File("/tmp"));
 
         System.out.println("input  file: " + inputFile.getPath());
         System.out.println("output file: " + outputFile.getPath());
@@ -49,62 +68,103 @@ public class TextDumpTest
         Assert.assertTrue(cleanDiff(new FileInputStream(inputFile), new FileInputStream(outputFile)));
     }
 
-    private void runTest(final String test) throws IOException
+    private void runCommandTest(final String test) throws IOException
     {
-        runFile(new File(getClass().getResource(test + ".txt").getFile()));
+        runCommandFile(new File(getClass().getResource(test + "_command.txt").getFile()));
+    }
+
+    private void runEventTest(final String test) throws IOException
+    {
+        runEventFile(new File(getClass().getResource(test + "_event.txt").getFile()));
     }
 
     @Test
-    public void testHeartbeat() throws IOException
+    public void testPulseCommand() throws IOException
     {
-        runTest("heartbeat");
+        runCommandTest("pulse");
     }
 
     @Test
-    public void testSubmit() throws IOException
+    public void testHeartbeatCommand() throws IOException
     {
-        runTest("submit");
+        runCommandTest("heartbeat");
     }
 
     @Test
-    public void testSupport() throws IOException
+    public void testLeaveCommand() throws IOException
     {
-        runTest("support");
+        runCommandTest("leave");
     }
 
     @Test
-    public void testVote() throws IOException
+    public void testSubmitCommand() throws IOException
     {
-        runTest("vote");
+        runCommandTest("submit");
     }
 
     @Test
-    public void testTimeoutUser() throws IOException
+    public void testSupportCommand() throws IOException
     {
-        runTest("timeout_user");
+        runCommandTest("support");
     }
 
     @Test
-    public void testTimeoutStatement() throws IOException
+    public void testVoteCommand() throws IOException
     {
-        runTest("timeout_statement");
+        runCommandTest("vote");
     }
 
     @Test
-    public void testBeginVote() throws IOException
+    public void testHeartbeatEvent() throws IOException
     {
-        runTest("begin_vote");
+        runEventTest("heartbeat");
     }
 
     @Test
-    public void testEndVoteAccepted() throws IOException
+    public void testSubmitEvent() throws IOException
     {
-        runTest("end_vote_accepted");
+        runEventTest("submit");
     }
 
     @Test
-    public void testEndVoteRejected() throws IOException
+    public void testSupportEvent() throws IOException
     {
-        runTest("end_vote_rejected");
+        runEventTest("support");
+    }
+
+    @Test
+    public void testVoteEvent() throws IOException
+    {
+        runEventTest("vote");
+    }
+
+    @Test
+    public void testTimeoutUserEvent() throws IOException
+    {
+        runEventTest("timeout_user");
+    }
+
+    @Test
+    public void testTimeoutStatementEvent() throws IOException
+    {
+        runEventTest("timeout_statement");
+    }
+
+    @Test
+    public void testBeginVoteEvent() throws IOException
+    {
+        runEventTest("begin_vote");
+    }
+
+    @Test
+    public void testEndVoteAcceptedEvent() throws IOException
+    {
+        runEventTest("end_vote_accepted");
+    }
+
+    @Test
+    public void testEndVoteRejectedEvent() throws IOException
+    {
+        runEventTest("end_vote_rejected");
     }
 }

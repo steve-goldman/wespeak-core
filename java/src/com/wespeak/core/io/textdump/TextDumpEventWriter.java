@@ -1,15 +1,77 @@
 package com.wespeak.core.io.textdump;
 
 import com.wespeak.core.EventHandler;
+import com.wespeak.core.Vote;
 
 import java.io.File;
 import java.io.IOException;
 
-public class TextDumpEventWriter extends TextDumpCommandWriter implements EventHandler
+public class TextDumpEventWriter extends TextDumpWriter implements EventHandler
 {
     public TextDumpEventWriter(final File file) throws IOException
     {
         super(file);
+    }
+
+    @Override
+    public void heartbeat(final long now, final String userId, final long userActiveUntil)
+    {
+        writeLine(TextDumpConstants.EventTypes.Heartbeat,
+                TextDumpConstants.timeToString(now),
+                userId,
+                TextDumpConstants.timeToString(userActiveUntil));
+    }
+
+    @Override
+    public void submit(final long   now,
+                       final String userId,
+                       final String statementId,
+                       final String text,
+                       final long   statementActiveUntil,
+                       final int    numEligibleSupporters,
+                       final int    propSupportNeeded,
+                       final long   userActiveUntil)
+    {
+        writeLine(TextDumpConstants.EventTypes.Submit,
+                TextDumpConstants.timeToString(now),
+                userId,
+                statementId,
+                TextDumpConstants.timeToString(statementActiveUntil),
+                "" + numEligibleSupporters,
+                "" + propSupportNeeded,
+                TextDumpConstants.timeToString(userActiveUntil),
+                "" + text.length());
+
+        writeStatement(text);
+
+    }
+
+    @Override
+    public void support(final long   now,
+                        final String userId,
+                        final String statementId,
+                        final long   userActiveUntil)
+    {
+        writeLine(TextDumpConstants.EventTypes.Support,
+                TextDumpConstants.timeToString(now),
+                userId,
+                statementId,
+                TextDumpConstants.timeToString(userActiveUntil));
+    }
+
+    @Override
+    public void vote(final long   now,
+                     final String userId,
+                     final String statementId,
+                     final Vote   vote,
+                     final long   userActiveUntil)
+    {
+        writeLine(TextDumpConstants.EventTypes.Vote,
+                TextDumpConstants.timeToString(now),
+                userId,
+                statementId,
+                vote.name(),
+                TextDumpConstants.timeToString(userActiveUntil));
     }
 
     @Override

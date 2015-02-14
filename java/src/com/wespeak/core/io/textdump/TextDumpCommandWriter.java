@@ -14,32 +14,36 @@ public class TextDumpCommandWriter extends TextDumpWriter implements CommandHand
     }
 
     @Override
-    public void heartbeat(final long now, final String userId, final long userActiveUntil)
+    public void pulse(final long now)
+    {
+        writeLine(TextDumpConstants.CommandTypes.Pulse,
+                TextDumpConstants.timeToString(now));
+    }
+
+    @Override
+    public void heartbeat(final long now, final String userId)
     {
         writeLine(TextDumpConstants.CommandTypes.Heartbeat,
                 TextDumpConstants.timeToString(now),
-                userId,
-                TextDumpConstants.timeToString(userActiveUntil));
+                userId);
+    }
+
+    @Override
+    public void leave(final long now, final String userId)
+    {
+        writeLine(TextDumpConstants.CommandTypes.Leave,
+                TextDumpConstants.timeToString(now),
+                userId);
     }
 
     @Override
     public void submit(final long   now,
                        final String userId,
-                       final String statementId,
-                       final String text,
-                       final long   statementActiveUntil,
-                       final int    numEligibleSupporters,
-                       final int    propSupportNeeded,
-                       final long   userActiveUntil)
+                       final String text)
     {
         writeLine(TextDumpConstants.CommandTypes.Submit,
                 TextDumpConstants.timeToString(now),
                 userId,
-                statementId,
-                TextDumpConstants.timeToString(statementActiveUntil),
-                "" + numEligibleSupporters,
-                "" + propSupportNeeded,
-                TextDumpConstants.timeToString(userActiveUntil),
                 "" + text.length());
 
         writeStatement(text);
@@ -48,28 +52,24 @@ public class TextDumpCommandWriter extends TextDumpWriter implements CommandHand
     @Override
     public void support(final long   now,
                         final String userId,
-                        final String statementId,
-                        final long   userActiveUntil)
+                        final String statementId)
     {
         writeLine(TextDumpConstants.CommandTypes.Support,
                 TextDumpConstants.timeToString(now),
                 userId,
-                statementId,
-                TextDumpConstants.timeToString(userActiveUntil));
+                statementId);
     }
 
     @Override
     public void vote(final long   now,
                      final String userId,
                      final String statementId,
-                     final Vote   vote,
-                     final long   userActiveUntil)
+                     final Vote   vote)
     {
         writeLine(TextDumpConstants.CommandTypes.Vote,
                 TextDumpConstants.timeToString(now),
                 userId,
                 statementId,
-                vote.name(),
-                TextDumpConstants.timeToString(userActiveUntil));
+                vote.name());
     }
 }

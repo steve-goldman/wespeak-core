@@ -2,7 +2,7 @@ package com.wespeak.core.io.textdump;
 
 import java.io.*;
 
-public class TextDumpReader
+public abstract class TextDumpReader
 {
     protected final BufferedReader reader;
     protected String line;
@@ -10,9 +10,27 @@ public class TextDumpReader
     protected TextDumpReader(final File file) throws FileNotFoundException
     {
         this.reader = new BufferedReader(new FileReader(file));
+        cacheNextLine();
     }
 
-    protected void cacheNextLine()
+    public boolean hasNext()
+    {
+        return line != null;
+    }
+
+    public void readNext()
+    {
+        if (!parseNext())
+        {
+            throw new Error("Unexpected line: " + line);
+        }
+
+        cacheNextLine();
+    }
+
+    protected abstract boolean parseNext();
+
+    private void cacheNextLine()
     {
         try
         {
