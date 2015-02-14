@@ -1,13 +1,13 @@
 package com.wespeak.core.datamanager;
 
-import com.wespeak.core.DataActions;
 import com.wespeak.core.DataQueries;
 import com.wespeak.core.StatementState;
 import com.wespeak.core.Vote;
+import com.wespeak.core.events.EventHandler;
 
 import java.util.Iterator;
 
-public class DataManager implements DataActions, DataQueries
+public class DataManager implements EventHandler, DataQueries
 {
     private final UsersTable      usersTable;
     private final StatementsTable statementsTable;
