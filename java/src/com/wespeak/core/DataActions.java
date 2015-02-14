@@ -17,7 +17,7 @@ public interface DataActions
                    int    propSupportNeeded,
                    long   userActiveUntil);
 
-    void support  (String userId, String statementId, long userActiveUntil);
+    void support  (long now, String userId, String statementId, long userActiveUntil);
 
     void vote     (long now, String userId, String statementId, Vote vote, long userActiveUntil);
 
@@ -26,9 +26,9 @@ public interface DataActions
     // engine actions
     //
 
-    void timeoutUser     (String userId);
+    void timeoutUser     (long now, String userId);
 
-    void timeoutStatement(String statementId);
+    void timeoutStatement(long now, String statementId);
 
     void beginVote       (long   now,
                           String statementId,
@@ -37,8 +37,8 @@ public interface DataActions
                           int    propVotesNeeded,
                           int    propYesesNeeded);
 
-    void endVoteAccepted (String statementId);
+    void endVoteAccepted (long now, String statementId);
 
-    void endVoteRejected (String statementId);
+    void endVoteRejected (long now, String statementId);
 
 }

@@ -13,7 +13,7 @@ public class DataManagerSupportTest extends DataManagerTestBase
             threwOrCannotSupport = !dataManager.canSupport(userId, statementId);
             if (!threwOrCannotSupport)
             {
-                dataManager.support(userId, statementId, T2);
+                support(userId, statementId, T2);
             }
         }
         catch (final Exception e)

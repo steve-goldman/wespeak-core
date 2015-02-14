@@ -111,7 +111,7 @@ public class DataManagerTestBase
             timeoutUserPreconditions(userId);
         }
 
-        dataManager.timeoutUser(userId);
+        dataManager.timeoutUser(T0, userId);
 
         if (checkPostconditions)
         {
@@ -152,7 +152,7 @@ public class DataManagerTestBase
         final int preNumEligibleSupporters = dataManager.getNumEligibleSupporters(statementId);
         final int preSupportCount          = dataManager.getSupportCount(statementId);
 
-        dataManager.timeoutStatement(statementId);
+        dataManager.timeoutStatement(T0, statementId);
 
         if (checkPostconditions)
         {
@@ -331,7 +331,7 @@ public class DataManagerTestBase
 
         final int preSupportCount = dataManager.getSupportCount(statementId);
 
-        dataManager.support(userId, statementId, userActiveUntil);
+        dataManager.support(T0, userId, statementId, userActiveUntil);
 
         if (checkPostconditions)
         {
@@ -540,7 +540,7 @@ public class DataManagerTestBase
         final int preVoteCount             = dataManager.getVoteCount(statementId);
         final int preYesCount              = dataManager.getYesCount(statementId);
 
-        dataManager.endVoteAccepted(statementId);
+        dataManager.endVoteAccepted(T0, statementId);
 
         if (checkPostconditions)
         {
@@ -627,7 +627,7 @@ public class DataManagerTestBase
         final int preVoteCount             = dataManager.getVoteCount(statementId);
         final int preYesCount              = dataManager.getYesCount(statementId);
 
-        dataManager.endVoteRejected(statementId);
+        dataManager.endVoteRejected(T0, statementId);
 
         if (checkPostconditions)
         {

@@ -74,7 +74,7 @@ public class DataManager implements DataActions, DataQueries
     }
 
     @Override
-    public void support(final String userId, final String statementId, final long userActiveUntil)
+    public void support(final long now, final String userId, final String statementId, final long userActiveUntil)
     {
         // pre-conditions are validated in canSupport, which the client must call
 
@@ -101,7 +101,7 @@ public class DataManager implements DataActions, DataQueries
     }
 
     @Override
-    public void timeoutUser(final String userId)
+    public void timeoutUser(final long now, final String userId)
     {
         validateUserExists(userId);
 
@@ -111,7 +111,7 @@ public class DataManager implements DataActions, DataQueries
     }
 
     @Override
-    public void timeoutStatement(final String statementId)
+    public void timeoutStatement(final long now, final String statementId)
     {
         validateStatementExists(statementId);
 
@@ -148,7 +148,7 @@ public class DataManager implements DataActions, DataQueries
     }
 
     @Override
-    public void endVoteAccepted(final String statementId)
+    public void endVoteAccepted(final long now, final String statementId)
     {
         validateStatementExists(statementId);
 
@@ -158,7 +158,7 @@ public class DataManager implements DataActions, DataQueries
     }
 
     @Override
-    public void endVoteRejected(final String statementId)
+    public void endVoteRejected(final long now, final String statementId)
     {
         validateStatementExists(statementId);
 
