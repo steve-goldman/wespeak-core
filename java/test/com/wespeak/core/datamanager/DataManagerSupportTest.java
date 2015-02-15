@@ -10,7 +10,7 @@ public class DataManagerSupportTest extends DataManagerTestBase
         boolean threwOrCannotSupport;
         try
         {
-            threwOrCannotSupport = !dataManager.canSupport(userId, statementId);
+            threwOrCannotSupport = !dataManager.isSupportEligible(userId, statementId);
             if (!threwOrCannotSupport)
             {
                 support(userId, statementId, T2);

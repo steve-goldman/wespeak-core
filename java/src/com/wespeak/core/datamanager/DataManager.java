@@ -76,7 +76,7 @@ public class DataManager implements EventHandler, DataQueries
     @Override
     public void support(final long now, final String userId, final String statementId, final long userActiveUntil)
     {
-        // pre-conditions are validated in canSupport, which the client must call
+        // pre-conditions are validated in isSupportEligible, which the client must call
 
         usersTable.extendActive(userId, userActiveUntil);
 
@@ -86,7 +86,7 @@ public class DataManager implements EventHandler, DataQueries
     @Override
     public void vote(final long now, final String userId, final String statementId, final Vote vote, final long userActiveUntil)
     {
-        // pre-conditions are validated in canVote, which the client must call
+        // pre-conditions are validated in isVoteEligible, which the client must call
 
         if (usersTable.isActive(userId))
         {
@@ -268,7 +268,7 @@ public class DataManager implements EventHandler, DataQueries
     }
 
     @Override
-    public boolean canSupport(final String userId, final String statementId)
+    public boolean isSupportEligible(final String userId, final String statementId)
     {
         validateUserExists(userId);
 
@@ -284,7 +284,7 @@ public class DataManager implements EventHandler, DataQueries
     }
 
     @Override
-    public boolean canVote(final String userId, final String statementId)
+    public boolean isVoteEligible(final String userId, final String statementId)
     {
         validateUserExists(userId);
 

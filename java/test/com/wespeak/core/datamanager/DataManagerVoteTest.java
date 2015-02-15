@@ -11,7 +11,7 @@ public class DataManagerVoteTest extends DataManagerTestBase
         boolean threwOrCannotVote;
         try
         {
-            threwOrCannotVote = !dataManager.canVote(userId, statementId);
+            threwOrCannotVote = !dataManager.isVoteEligible(userId, statementId);
             if (!threwOrCannotVote)
             {
                 dataManager.vote(T0, userId, statementId, Vote.YES, T2);

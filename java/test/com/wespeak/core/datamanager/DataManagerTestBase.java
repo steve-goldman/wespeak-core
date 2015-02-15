@@ -295,7 +295,7 @@ public class DataManagerTestBase
         Assert.assertEquals(100, dataManager.getUserTTL(userActiveUntil - 100, userId));
 
         // the user who submitted it can support it but does not yet support it
-        Assert.assertTrue(dataManager.canSupport(userId, statementId));
+        Assert.assertTrue(dataManager.isSupportEligible(userId, statementId));
         Assert.assertFalse(dataManager.isSupported(userId, statementId));
 
         // the statement is in the list associated with the user exactly once
@@ -355,7 +355,7 @@ public class DataManagerTestBase
         Assert.assertTrue(dataManager.hasActiveStatements());
 
         // the user can but does not already support the statement
-        Assert.assertTrue (dataManager.canSupport(userId, statementId));
+        Assert.assertTrue (dataManager.isSupportEligible(userId, statementId));
         Assert.assertFalse(dataManager.isSupported(userId, statementId));
 
         // the statement is in the list of active statements
@@ -747,7 +747,7 @@ public class DataManagerTestBase
         validateFoundCount(dataManager.getRejectedStatementIds(), statementId, 0);
 
         // the user can vote for the statement but has not yet done so
-        Assert.assertTrue(dataManager.canVote(userId, statementId));
+        Assert.assertTrue(dataManager.isVoteEligible(userId, statementId));
         Assert.assertEquals(Vote.ABSTAIN, dataManager.getVote(userId, statementId));
 
         // the statement is in the list of statements the user is eligible to vote for
@@ -787,7 +787,7 @@ public class DataManagerTestBase
 
         // the user has voted and can no longer do so
         Assert.assertEquals(vote, dataManager.getVote(userId, statementId));
-        Assert.assertFalse(dataManager.canVote(userId, statementId));
+        Assert.assertFalse(dataManager.isVoteEligible(userId, statementId));
 
         // the statement is in the list of statements the user is eligible to vote for
         validateFoundCount(dataManager.getVotedStatementIds(userId), statementId, 1);
