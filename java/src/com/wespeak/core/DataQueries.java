@@ -37,6 +37,7 @@ public interface DataQueries
 
     boolean  hasActiveUsers            ();
     String   getOldestActiveUserId     ();
+    int      getActiveUserCount        ();
     boolean  hasActiveStatements       ();
     String   getOldestActiveStatementId();
 

@@ -75,6 +75,12 @@ public class MemoryUsersTable implements UsersTable
     }
 
     @Override
+    public int getActiveUserCount()
+    {
+        return activeUsers.size();
+    }
+
+    @Override
     public String getOldestActiveUserId()
     {
         return activeUsers.peek().userId;

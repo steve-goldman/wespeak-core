@@ -384,6 +384,12 @@ public class DataManager implements EventHandler, DataQueries
     }
 
     @Override
+    public int getActiveUserCount()
+    {
+        return usersTable.getActiveUserCount();
+    }
+
+    @Override
     public boolean hasActiveStatements()
     {
         return statementsTable.hasActiveStatements();

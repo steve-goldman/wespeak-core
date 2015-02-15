@@ -9,19 +9,25 @@ public class DataManagerUserTest extends DataManagerTestBase
     public void hasNoActiveUsers()
     {
         Assert.assertFalse(dataManager.hasActiveUsers());
+        Assert.assertEquals(0, dataManager.getActiveUserCount());
 
         heartbeat(T0, Steve, T2);
         Assert.assertTrue(dataManager.hasActiveUsers());
+        Assert.assertEquals(1, dataManager.getActiveUserCount());
         timeoutUser(Steve);
 
         Assert.assertFalse(dataManager.hasActiveUsers());
+        Assert.assertEquals(0, dataManager.getActiveUserCount());
     }
 
     @Test
     public void extendUserActiveTime()
     {
+        Assert.assertEquals(0, dataManager.getActiveUserCount());
         heartbeat(T0, Steve, T2);
+        Assert.assertEquals(1, dataManager.getActiveUserCount());
         heartbeat(T1, Steve, T3);
+        Assert.assertEquals(1, dataManager.getActiveUserCount());
     }
 
     @Test
@@ -82,24 +88,31 @@ public class DataManagerUserTest extends DataManagerTestBase
         // this is based on the order they are activated, not the "now" parameters
 
         Assert.assertFalse(dataManager.hasActiveUsers());
+        Assert.assertEquals(0, dataManager.getActiveUserCount());
 
         heartbeat(T0, Steve, T2);
         Assert.assertEquals(Steve, dataManager.getOldestActiveUserId());
+        Assert.assertEquals(1, dataManager.getActiveUserCount());
 
         heartbeat(T0, Mike, T2);
         Assert.assertEquals(Steve, dataManager.getOldestActiveUserId());
+        Assert.assertEquals(2, dataManager.getActiveUserCount());
 
         heartbeat(T0, Ssor, T2);
         Assert.assertEquals(Steve, dataManager.getOldestActiveUserId());
+        Assert.assertEquals(3, dataManager.getActiveUserCount());
 
         timeoutUser(Steve);
         Assert.assertEquals(Mike, dataManager.getOldestActiveUserId());
+        Assert.assertEquals(2, dataManager.getActiveUserCount());
 
         timeoutUser(Mike);
         Assert.assertEquals(Ssor, dataManager.getOldestActiveUserId());
+        Assert.assertEquals(1, dataManager.getActiveUserCount());
 
         timeoutUser(Ssor);
         Assert.assertFalse(dataManager.hasActiveUsers());
+        Assert.assertEquals(0, dataManager.getActiveUserCount());
     }
 
     @Test
@@ -108,24 +121,31 @@ public class DataManagerUserTest extends DataManagerTestBase
         // this is based on the order they are activated, not the "now" parameters
 
         Assert.assertFalse(dataManager.hasActiveUsers());
+        Assert.assertEquals(0, dataManager.getActiveUserCount());
 
         heartbeat(T0, Steve, T2);
         Assert.assertEquals(Steve, dataManager.getOldestActiveUserId());
+        Assert.assertEquals(1, dataManager.getActiveUserCount());
 
         heartbeat(T0, Mike, T2);
         Assert.assertEquals(Steve, dataManager.getOldestActiveUserId());
+        Assert.assertEquals(2, dataManager.getActiveUserCount());
 
         heartbeat(T0, Ssor, T2);
         Assert.assertEquals(Steve, dataManager.getOldestActiveUserId());
+        Assert.assertEquals(3, dataManager.getActiveUserCount());
 
         timeoutUser(Ssor);
         Assert.assertEquals(Steve, dataManager.getOldestActiveUserId());
+        Assert.assertEquals(2, dataManager.getActiveUserCount());
 
         timeoutUser(Mike);
         Assert.assertEquals(Steve, dataManager.getOldestActiveUserId());
+        Assert.assertEquals(1, dataManager.getActiveUserCount());
 
         timeoutUser(Steve);
         Assert.assertFalse(dataManager.hasActiveUsers());
+        Assert.assertEquals(0, dataManager.getActiveUserCount());
     }
 
 }

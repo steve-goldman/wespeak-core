@@ -13,6 +13,7 @@ public interface UsersTable
     long    getExpirationTime    (String userId);
     Iterator<String> getActiveUsers();
     boolean hasActiveUsers       ();
+    int     getActiveUserCount   ();
     String  getOldestActiveUserId();
 
     //
