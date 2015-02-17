@@ -1,12 +1,12 @@
 package com.wespeak.core.io.textdump;
 
-import com.wespeak.core.EventHandler;
+import com.wespeak.core.EventPublisher;
 import com.wespeak.core.Vote;
 
 import java.io.File;
 import java.io.IOException;
 
-public class TextDumpEventWriter extends TextDumpWriter implements EventHandler
+public class TextDumpEventWriter extends TextDumpWriter implements EventPublisher
 {
     public TextDumpEventWriter(final File file) throws IOException
     {
