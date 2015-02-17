@@ -1,22 +1,71 @@
 package com.wespeak.core.engine;
 
-public interface GroupParameters
+public class GroupParameters
 {
-    long getUserTTL();
-    void setUserTTL(long userTTL);
+    private long userTTL;
+    private long submissionTTL;
+    private long voteTTL;
+    private int  supporthThreshold;
+    private int  voteThreshold;
+    private int  yesThreshold;
 
-    long getSubmissionTTL();
-    void setSubmissionTTL(long submittionTTL);
+    public long getUserTTL()
+    {
+        return userTTL;
+    }
 
-    long getVoteTTL();
-    void setVoteTTL(long voteTTL);
+    public void setUserTTL(final long userTTL)
+    {
+        this.userTTL = userTTL;
+    }
 
-    int  getSupportThreshold();
-    void setSupportThreshold(int supportThreshold);
+    public long getSubmissionTTL()
+    {
+        return submissionTTL;
+    }
 
-    int  getVoteThreshold();
-    void setVoteThreshold(int voteThreshold);
+    public void setSubmissionTTL(final long submissionTTL)
+    {
+        this.submissionTTL = submissionTTL;
+    }
 
-    int  getYesThreshold();
-    void setYesThreshold(int yesThreshold);
+    public long getVoteTTL()
+    {
+        return voteTTL;
+    }
+
+    public void setVoteTTL(final long voteTTL)
+    {
+        this.voteTTL = voteTTL;
+    }
+
+    public int  getSupportThreshold()
+    {
+        return supporthThreshold;
+    }
+
+    public void setSupportThreshold(final int supportThreshold)
+    {
+        this.supporthThreshold = supportThreshold;
+    }
+
+    public int  getVoteThreshold()
+    {
+        return voteThreshold;
+    }
+
+    public void setVoteThreshold(final int voteThreshold)
+    {
+        this.voteThreshold = voteThreshold;
+    }
+
+    public int  getYesThreshold()
+    {
+        return yesThreshold;
+    }
+
+    public void setYesThreshold(final int yesThreshold)
+    {
+        this.yesThreshold = yesThreshold;
+    }
 }
