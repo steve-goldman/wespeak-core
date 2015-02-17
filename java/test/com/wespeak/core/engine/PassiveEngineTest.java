@@ -10,17 +10,17 @@ import org.junit.Test;
 
 public class PassiveEngineTest
 {
-    protected static final long    T0          = 398781000;
-    protected static final long    OneMinute   = 1000 * 60;
-    protected static final long    OneHour     = 60 * OneMinute;
-    protected static final long    OneDay      = 24 * OneHour;
+    private static final long    T0          = 398781000;
+    private static final long    OneMinute   = 1000 * 60;
+    private static final long    OneHour     = 60 * OneMinute;
+    private static final long    OneDay      = 24 * OneHour;
 
-    protected static final String  Steve  = "steve";
+    private static final String  Steve  = "steve";
 
-    protected DataManager          dataManager;
-    protected GroupParameters      groupParameters;
+    private DataManager          dataManager;
+    private GroupParameters      groupParameters;
 
-    protected PassiveEngine        passiveEngine;
+    private PassiveEngine        passiveEngine;
 
     @Before
     public void setup()
