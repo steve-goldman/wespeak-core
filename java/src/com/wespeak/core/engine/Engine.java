@@ -47,22 +47,26 @@ public class Engine implements CommandProcessor
         while (dataManager.hasActiveUsers())
         {
             final String userId = dataManager.getOldestActiveUserId();
-            if (dataManager.getUserTTL(now, userId) < 0)
+            if (dataManager.getUserTTL(now, userId) > 0)
             {
-                dataManager   .timeoutUser(now, userId);
-                eventPublisher.timeoutUser(now, userId);
+                break;
             }
+
+            dataManager   .timeoutUser(now, userId);
+            eventPublisher.timeoutUser(now, userId);
         }
 
         // time out expired statements
         while (dataManager.hasActiveStatements())
         {
             final String statementId = dataManager.getOldestActiveStatementId();
-            if (dataManager.getSubmissionTTL(now, statementId) < 0)
+            if (dataManager.getSubmissionTTL(now, statementId) > 0)
             {
-                dataManager   .timeoutStatement(now, statementId);
-                eventPublisher.timeoutStatement(now, statementId);
+                break;
             }
+
+            dataManager   .timeoutStatement(now, statementId);
+            eventPublisher.timeoutStatement(now, statementId);
         }
 
         // end votes
@@ -77,7 +81,7 @@ public class Engine implements CommandProcessor
             while (iter.hasNext())
             {
                 final String statementId = iter.next();
-                if (dataManager.getVoteTTL(now, statementId) < 0)
+                if (dataManager.getVoteTTL(now, statementId) <= 0)
                 {
                     endVote(now, statementId);
                     voteEnded = true;
@@ -349,7 +353,7 @@ public class Engine implements CommandProcessor
             return;
         }
 
-        if (dataManager.isSupportEligible(userId, statementId))
+        if (!dataManager.isSupportEligible(userId, statementId))
         {
             lastResponse = new CommandResponse(CommandResponse.Code.BAD_COMMAND, "user:" + userId + " not eligible to support statement:" + statementId);
             return;
@@ -397,7 +401,7 @@ public class Engine implements CommandProcessor
             return;
         }
 
-        if (dataManager.getState(statementId) != StatementState.ACTIVE)
+        if (dataManager.getState(statementId) != StatementState.VOTING)
         {
             lastResponse = new CommandResponse(CommandResponse.Code.COMMAND_REJECT, "statement:" + statementId + " is not voting");
             return;
