@@ -37,9 +37,9 @@ public class TextDumpCommandWriter extends TextDumpWriter implements CommandHand
     }
 
     @Override
-    public String submit(final long   now,
-                         final String userId,
-                         final String text)
+    public void submit(final long   now,
+                       final String userId,
+                       final String text)
     {
         writeLine(TextDumpConstants.CommandTypes.Submit,
                 TextDumpConstants.timeToString(now),
@@ -47,8 +47,6 @@ public class TextDumpCommandWriter extends TextDumpWriter implements CommandHand
                 "" + text.length());
 
         writeStatement(text);
-
-        return null;
     }
 
     @Override

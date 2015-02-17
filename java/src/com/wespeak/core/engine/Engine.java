@@ -13,6 +13,7 @@ public class Engine extends EngineBase implements CommandProcessor
     private final EventPublisher  eventPublisher;
 
     private       CommandResponse lastResponse;
+    private       String          lastStatementId;  // only valid if last action was submit and response was OK
 
     private final MessageDigest   messageDigest;
 
@@ -36,6 +37,12 @@ public class Engine extends EngineBase implements CommandProcessor
     public CommandResponse getLastResponse()
     {
         return lastResponse;
+    }
+
+    @Override
+    public String getLastStatementId()
+    {
+        return lastStatementId;
     }
 
     @Override
@@ -203,12 +210,13 @@ public class Engine extends EngineBase implements CommandProcessor
     }
 
     @Override
-    public String submit(final long now, final String userId, final String text)
+    public void submit(final long now, final String userId, final String text)
     {
         if (!dataManager.isUserExists(userId))
         {
-            lastResponse = new CommandResponse(CommandResponse.Code.BAD_COMMAND, "user:" + userId + " does not exist");
-            return null;
+            lastResponse    = new CommandResponse(CommandResponse.Code.BAD_COMMAND, "user:" + userId + " does not exist");
+            lastStatementId = null;
+            return;
         }
 
         final byte[] binStatementId = messageDigest.digest(("" + now + userId + text).getBytes());
@@ -230,14 +238,16 @@ public class Engine extends EngineBase implements CommandProcessor
 
         if (dataManager.isStatementExists(statementId))
         {
-            lastResponse = new CommandResponse(CommandResponse.Code.COMMAND_REJECT, "internal hashing issue");
-            return null;
+            lastResponse    = new CommandResponse(CommandResponse.Code.COMMAND_REJECT, "internal hashing issue");
+            lastStatementId = null;
+            return;
         }
 
         if (!validParameterChange(text))
         {
-            lastResponse = new CommandResponse(CommandResponse.Code.BAD_COMMAND, "invalid parameter change");
-            return null;
+            lastResponse    = new CommandResponse(CommandResponse.Code.BAD_COMMAND, "invalid parameter change");
+            lastStatementId = null;
+            return;
         }
 
         dataManager.submit(
@@ -260,9 +270,10 @@ public class Engine extends EngineBase implements CommandProcessor
                 groupParameters.getSupportThreshold(),
                 now + groupParameters.getUserTTL());
 
-        lastResponse = new CommandResponse(CommandResponse.Code.OK, "statementId:" + statementId);
+        lastResponse    = new CommandResponse(CommandResponse.Code.OK, null);
+        lastStatementId = statementId;
 
-        return statementId;
+        return;
     }
 
     @Override

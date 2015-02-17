@@ -8,7 +8,7 @@ public interface CommandHandler
 
     void   leave    (long now, String userId);
 
-    String submit   (long now, String userId, String text);
+    void   submit   (long now, String userId, String text);
 
     void   support  (long now, String userId, String statementId);
 

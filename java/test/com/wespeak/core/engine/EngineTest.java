@@ -1,5 +1,6 @@
 package com.wespeak.core.engine;
 
+import com.wespeak.core.CommandResponse;
 import com.wespeak.core.SpecialStatements;
 import com.wespeak.core.StatementState;
 import com.wespeak.core.Vote;
@@ -115,7 +116,9 @@ public class EngineTest
     {
         System.out.println("priming with: " + text);
 
-        final String statementId = engine.submit(0, userId, text);
+        engine.submit(0, userId, text);
+        Assert.assertEquals(CommandResponse.Code.OK, engine.getLastResponse().getCode());
+        final String statementId = engine.getLastStatementId();
         Assert.assertTrue(dataManager.isStatementExists(statementId));
         Assert.assertEquals(StatementState.ACTIVE, dataManager.getState(statementId));
 
