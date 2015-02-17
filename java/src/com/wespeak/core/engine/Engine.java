@@ -175,12 +175,6 @@ public class Engine extends EngineBase implements CommandProcessor
     @Override
     public void heartbeat(final long now, final String userId)
     {
-        if (!dataManager.isUserExists(userId))
-        {
-            lastResponse = new CommandResponse(CommandResponse.Code.BAD_COMMAND, "user:" + userId + " does not exist");
-            return;
-        }
-
         dataManager   .heartbeat(now, userId, now + groupParameters.getUserTTL());
         eventPublisher.heartbeat(now, userId, now + groupParameters.getUserTTL());
 
