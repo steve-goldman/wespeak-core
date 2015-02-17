@@ -8,7 +8,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class PassiveEngineTestBase
+public class PassiveEngineTest
 {
     protected static final long    T0          = 398781000;
     protected static final long    OneMinute   = 1000 * 60;
