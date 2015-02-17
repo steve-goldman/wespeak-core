@@ -14,7 +14,7 @@ public class Engine implements CommandProcessor
     private final GroupParameters groupParameters;
     private final EventPublisher  eventPublisher;
 
-    private CommandResponse       lastResponse;
+    private       CommandResponse lastResponse;
 
     private final MessageDigest   messageDigest;
 
