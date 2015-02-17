@@ -4,10 +4,51 @@ import java.util.regex.Pattern;
 
 public class SpecialStatements
 {
-    public static final Pattern UserTTL           = Pattern.compile("^Change INACTIVITY TIMEOUT to (\\d+)$");
-    public static final Pattern SubmissionTTL     = Pattern.compile("^Change STATEMENT LIFESPAN to (\\d+)$");
-    public static final Pattern VoteTTL           = Pattern.compile("^Change VOTE LIFESPAN to (\\d+)$");
-    public static final Pattern SupporthThreshold = Pattern.compile("^Change SUPPORT THRESHOLD to (\\d+)$");
-    public static final Pattern VoteThreshold     = Pattern.compile("^Change VOTE THRESHOLD to (\\d+)$");
-    public static final Pattern YesThreshold      = Pattern.compile("^Change YES THRESHOLD to (\\d+)$");
+    private static final String  UserTTLStem          = "Change INACTIVITY TIMEOUT to ";
+    public  static final Pattern UserTTL              = Pattern.compile("^" + UserTTLStem + "(\\d+)$");
+
+    private static final String  SubmissionTTLStem    = "Change STATEMENT LIFESPAN to ";
+    public  static final Pattern SubmissionTTL        = Pattern.compile("^" + SubmissionTTLStem + "(\\d+)$");
+
+    private static final String  VoteTTLStem          = "Change VOTE LIFESPAN to ";
+    public  static final Pattern VoteTTL              = Pattern.compile("^" + VoteTTLStem + "(\\d+)$");
+
+    private static final String  SupportThresholdStem = "Change SUPPORT THRESHOLD to ";
+    public  static final Pattern SupporthThreshold    = Pattern.compile("^" + SupportThresholdStem + "(\\d+)$");
+
+    private static final String  VoteThresholdStem    = "Change VOTE THRESHOLD to ";
+    public  static final Pattern VoteThreshold        = Pattern.compile("^" + VoteThresholdStem + "(\\d+)$");
+
+    private static final String  YesThresholdStem     = "Change YES THRESHOLD to ";
+    public  static final Pattern YesThreshold         = Pattern.compile("^" + YesThresholdStem + "(\\d+)$");
+
+    public static String makeUserTTL(final long userTTL)
+    {
+        return UserTTLStem + userTTL;
+    }
+
+    public static String makeSubmissionTTL(final long submissionTTL)
+    {
+        return SubmissionTTLStem + submissionTTL;
+    }
+
+    public static String makeVoteTTL(final long voteTTL)
+    {
+        return VoteTTLStem + voteTTL;
+    }
+
+    public static String makeSupporthThreshold(final int supportThreshold)
+    {
+        return SupportThresholdStem + supportThreshold;
+    }
+
+    public static String makeVoteThreshold(final int voteThreshold)
+    {
+        return VoteThresholdStem + voteThreshold;
+    }
+
+    public static String makeYesThreshold(final int yesThreshold)
+    {
+        return YesThresholdStem + yesThreshold;
+    }
 }
