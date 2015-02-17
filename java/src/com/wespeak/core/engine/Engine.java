@@ -254,26 +254,41 @@ public class Engine implements CommandProcessor
     }
 
     @Override
-    public void submit(final long now, final String userId, final String text)
+    public String submit(final long now, final String userId, final String text)
     {
         if (!dataManager.isUserExists(userId))
         {
             lastResponse = new CommandResponse(CommandResponse.Code.BAD_COMMAND, "user:" + userId + " does not exist");
-            return;
+            return null;
         }
 
-        final String statementId = new String(messageDigest.digest(("" + now + userId + text).getBytes()));
+        final byte[] binStatementId = messageDigest.digest(("" + now + userId + text).getBytes());
+
+        final StringBuilder sb = new StringBuilder();
+        for (final byte b : binStatementId)
+        {
+            if ((0xff & b) < 0x10)
+            {
+                sb.append("0").append(Integer.toHexString(0xff & b));
+            }
+            else
+            {
+                sb.append(Integer.toHexString(0xff & b));
+            }
+        }
+
+        final String statementId = sb.toString();
 
         if (dataManager.isStatementExists(statementId))
         {
             lastResponse = new CommandResponse(CommandResponse.Code.COMMAND_REJECT, "internal hashing issue");
-            return;
+            return null;
         }
 
         if (!validParameterChange(text))
         {
             lastResponse = new CommandResponse(CommandResponse.Code.BAD_COMMAND, "invalid parameter change");
-            return;
+            return null;
         }
 
         dataManager.submit(
@@ -296,7 +311,9 @@ public class Engine implements CommandProcessor
                 groupParameters.getSupportThreshold(),
                 now + groupParameters.getUserTTL());
 
-        lastResponse = new CommandResponse(CommandResponse.Code.OK, null);
+        lastResponse = new CommandResponse(CommandResponse.Code.OK, "statementId:" + statementId);
+
+        return statementId;
     }
 
     @Override
