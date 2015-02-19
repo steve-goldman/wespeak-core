@@ -16,8 +16,8 @@ public class TextDumpEventWriter extends TextDumpWriter implements EventPublishe
     @Override
     public void heartbeat(final long now, final String userId, final long userActiveUntil)
     {
-        writeLine(TextDumpConstants.EventTypes.Heartbeat,
-                TextDumpConstants.timeToString(now),
+        writeLine(TextDumpConstants.timeToString(now),
+                TextDumpConstants.EventTypes.Heartbeat,
                 userId,
                 TextDumpConstants.timeToString(userActiveUntil));
     }
@@ -32,8 +32,8 @@ public class TextDumpEventWriter extends TextDumpWriter implements EventPublishe
                        final int    propSupportNeeded,
                        final long   userActiveUntil)
     {
-        writeLine(TextDumpConstants.EventTypes.Submit,
-                TextDumpConstants.timeToString(now),
+        writeLine(TextDumpConstants.timeToString(now),
+                TextDumpConstants.EventTypes.Submit,
                 userId,
                 statementId,
                 TextDumpConstants.timeToString(statementActiveUntil),
@@ -52,8 +52,8 @@ public class TextDumpEventWriter extends TextDumpWriter implements EventPublishe
                         final String statementId,
                         final long   userActiveUntil)
     {
-        writeLine(TextDumpConstants.EventTypes.Support,
-                TextDumpConstants.timeToString(now),
+        writeLine(TextDumpConstants.timeToString(now),
+                TextDumpConstants.EventTypes.Support,
                 userId,
                 statementId,
                 TextDumpConstants.timeToString(userActiveUntil));
@@ -66,8 +66,8 @@ public class TextDumpEventWriter extends TextDumpWriter implements EventPublishe
                      final Vote   vote,
                      final long   userActiveUntil)
     {
-        writeLine(TextDumpConstants.EventTypes.Vote,
-                TextDumpConstants.timeToString(now),
+        writeLine(TextDumpConstants.timeToString(now),
+                TextDumpConstants.EventTypes.Vote,
                 userId,
                 statementId,
                 vote.name(),
@@ -77,16 +77,16 @@ public class TextDumpEventWriter extends TextDumpWriter implements EventPublishe
     @Override
     public void timeoutUser(final long now, final String userId)
     {
-        writeLine(TextDumpConstants.EventTypes.TimeoutUser,
-                TextDumpConstants.timeToString(now),
+        writeLine(TextDumpConstants.timeToString(now),
+                TextDumpConstants.EventTypes.TimeoutUser,
                 userId);
     }
 
     @Override
     public void timeoutStatement(final long now, final String statementId)
     {
-        writeLine(TextDumpConstants.EventTypes.TimeoutStatement,
-                TextDumpConstants.timeToString(now),
+        writeLine(TextDumpConstants.timeToString(now),
+                TextDumpConstants.EventTypes.TimeoutStatement,
                 statementId);
     }
 
@@ -98,8 +98,8 @@ public class TextDumpEventWriter extends TextDumpWriter implements EventPublishe
                           final int    propVotesNeeded,
                           final int    propYesesNeeded)
     {
-        writeLine(TextDumpConstants.EventTypes.BeginVote,
-                TextDumpConstants.timeToString(now),
+        writeLine(TextDumpConstants.timeToString(now),
+                TextDumpConstants.EventTypes.BeginVote,
                 statementId,
                 TextDumpConstants.timeToString(until),
                 "" + numEligibleVoters,
@@ -110,16 +110,16 @@ public class TextDumpEventWriter extends TextDumpWriter implements EventPublishe
     @Override
     public void endVoteAccepted(final long now, final String statementId)
     {
-        writeLine(TextDumpConstants.EventTypes.EndVoteAccepted,
-                TextDumpConstants.timeToString(now),
+        writeLine(TextDumpConstants.timeToString(now),
+                TextDumpConstants.EventTypes.EndVoteAccepted,
                 statementId);
     }
 
     @Override
     public void endVoteRejected(long now, String statementId)
     {
-        writeLine(TextDumpConstants.EventTypes.EndVoteRejected,
-                TextDumpConstants.timeToString(now),
+        writeLine(TextDumpConstants.timeToString(now),
+                TextDumpConstants.EventTypes.EndVoteRejected,
                 statementId);
     }
 }

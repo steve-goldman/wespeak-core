@@ -16,23 +16,23 @@ public class TextDumpCommandWriter extends TextDumpWriter implements CommandHand
     @Override
     public void pulse(final long now)
     {
-        writeLine(TextDumpConstants.CommandTypes.Pulse,
-                TextDumpConstants.timeToString(now));
+        writeLine(TextDumpConstants.timeToString(now),
+                TextDumpConstants.CommandTypes.Pulse);
     }
 
     @Override
     public void heartbeat(final long now, final String userId)
     {
-        writeLine(TextDumpConstants.CommandTypes.Heartbeat,
-                TextDumpConstants.timeToString(now),
+        writeLine(TextDumpConstants.timeToString(now),
+                TextDumpConstants.CommandTypes.Heartbeat,
                 userId);
     }
 
     @Override
     public void leave(final long now, final String userId)
     {
-        writeLine(TextDumpConstants.CommandTypes.Leave,
-                TextDumpConstants.timeToString(now),
+        writeLine(TextDumpConstants.timeToString(now),
+                TextDumpConstants.CommandTypes.Leave,
                 userId);
     }
 
@@ -41,8 +41,8 @@ public class TextDumpCommandWriter extends TextDumpWriter implements CommandHand
                        final String userId,
                        final String text)
     {
-        writeLine(TextDumpConstants.CommandTypes.Submit,
-                TextDumpConstants.timeToString(now),
+        writeLine(TextDumpConstants.timeToString(now),
+                TextDumpConstants.CommandTypes.Submit,
                 userId,
                 "" + text.length());
 
@@ -54,8 +54,8 @@ public class TextDumpCommandWriter extends TextDumpWriter implements CommandHand
                         final String userId,
                         final String statementId)
     {
-        writeLine(TextDumpConstants.CommandTypes.Support,
-                TextDumpConstants.timeToString(now),
+        writeLine(TextDumpConstants.timeToString(now),
+                TextDumpConstants.CommandTypes.Support,
                 userId,
                 statementId);
     }
@@ -66,8 +66,8 @@ public class TextDumpCommandWriter extends TextDumpWriter implements CommandHand
                      final String statementId,
                      final Vote   vote)
     {
-        writeLine(TextDumpConstants.CommandTypes.Vote,
-                TextDumpConstants.timeToString(now),
+        writeLine(TextDumpConstants.timeToString(now),
+                TextDumpConstants.CommandTypes.Vote,
                 userId,
                 statementId,
                 vote.name());

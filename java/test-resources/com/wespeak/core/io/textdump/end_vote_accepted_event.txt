@@ -1,1 +1,1 @@
-end_vote_accepted|2015-02-14 00:17:12.080 -0500|statement1
+2015-02-14 00:17:12.080 -0500|end_vote_accepted|statement1

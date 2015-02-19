@@ -25,63 +25,63 @@ public class TextDumpEventReader extends TextDumpReader
             final String[] tokens = line.split(Pattern.quote(TextDumpConstants.Separator));
 
             // check for heartbeat
-            if (TextDumpConstants.EventTypes.Heartbeat.equals(tokens[0]))
+            if (TextDumpConstants.EventTypes.Heartbeat.equals(tokens[1]))
             {
                 handleHeartbeat(tokens);
                 return true;
             }
 
             // check for submit
-            if (TextDumpConstants.EventTypes.Submit.equals(tokens[0]))
+            if (TextDumpConstants.EventTypes.Submit.equals(tokens[1]))
             {
                 handleSubmit(tokens);
                 return true;
             }
 
             // check for support
-            if (TextDumpConstants.EventTypes.Support.equals(tokens[0]))
+            if (TextDumpConstants.EventTypes.Support.equals(tokens[1]))
             {
                 handleSupport(tokens);
                 return true;
             }
 
             // check for vote
-            if (TextDumpConstants.EventTypes.Vote.equals(tokens[0]))
+            if (TextDumpConstants.EventTypes.Vote.equals(tokens[1]))
             {
                 handleVote(tokens);
                 return true;
             }
 
             // check for timeout user
-            if (TextDumpConstants.EventTypes.TimeoutUser.equals(tokens[0]))
+            if (TextDumpConstants.EventTypes.TimeoutUser.equals(tokens[1]))
             {
                 handleTimeoutUser(tokens);
                 return true;
             }
 
             // check for timeout statement
-            if (TextDumpConstants.EventTypes.TimeoutStatement.equals(tokens[0]))
+            if (TextDumpConstants.EventTypes.TimeoutStatement.equals(tokens[1]))
             {
                 handleTimeoutStatement(tokens);
                 return true;
             }
 
             // check for begin vote
-            if (TextDumpConstants.EventTypes.BeginVote.equals(tokens[0]))
+            if (TextDumpConstants.EventTypes.BeginVote.equals(tokens[1]))
             {
                 handleBeginVote(tokens);
                 return true;
             }
 
             // check for end vote accepted
-            if (TextDumpConstants.EventTypes.EndVoteAccepted.equals(tokens[0]))
+            if (TextDumpConstants.EventTypes.EndVoteAccepted.equals(tokens[1]))
             {
                 handleEndVoteAccepted(tokens);
                 return true;
             }
 
             // check for end vote rejected
-            if (TextDumpConstants.EventTypes.EndVoteRejected.equals(tokens[0]))
+            if (TextDumpConstants.EventTypes.EndVoteRejected.equals(tokens[1]))
             {
                 handleEndVoteRejected(tokens);
                 return true;
@@ -97,7 +97,7 @@ public class TextDumpEventReader extends TextDumpReader
 
     private void handleHeartbeat(final String[] tokens) throws Exception
     {
-        final long   now             = TextDumpConstants.stringToTime(tokens[1]);
+        final long   now             = TextDumpConstants.stringToTime(tokens[0]);
         final String userId          = tokens[2];
         final long   userActiveUntil = TextDumpConstants.stringToTime(tokens[3]);
 
@@ -106,7 +106,7 @@ public class TextDumpEventReader extends TextDumpReader
 
     private void handleSubmit(final String[] tokens) throws Exception
     {
-        final long   now                   = TextDumpConstants.stringToTime(tokens[1]);
+        final long   now                   = TextDumpConstants.stringToTime(tokens[0]);
         final String userId                = tokens[2];
         final String statementId           = tokens[3];
         final long   statementActiveUntil  = TextDumpConstants.stringToTime(tokens[4]);
@@ -125,7 +125,7 @@ public class TextDumpEventReader extends TextDumpReader
 
     private void handleSupport(final String[] tokens) throws Exception
     {
-        final long   now             = TextDumpConstants.stringToTime(tokens[1]);
+        final long   now             = TextDumpConstants.stringToTime(tokens[0]);
         final String userId          = tokens[2];
         final String statementId     = tokens[3];
         final long   userActiveUntil = TextDumpConstants.stringToTime(tokens[4]);
@@ -135,7 +135,7 @@ public class TextDumpEventReader extends TextDumpReader
 
     private void handleVote(final String[] tokens) throws Exception
     {
-        final long   now             = TextDumpConstants.stringToTime(tokens[1]);
+        final long   now             = TextDumpConstants.stringToTime(tokens[0]);
         final String userId          = tokens[2];
         final String statementId     = tokens[3];
         final Vote vote            = Vote.valueOf(tokens[4]);
@@ -146,7 +146,7 @@ public class TextDumpEventReader extends TextDumpReader
 
     private void handleTimeoutUser(final String[] tokens) throws Exception
     {
-        final long   now    = TextDumpConstants.stringToTime(tokens[1]);
+        final long   now    = TextDumpConstants.stringToTime(tokens[0]);
         final String userId = tokens[2];
 
         eventHandler.timeoutUser(now, userId);
@@ -154,7 +154,7 @@ public class TextDumpEventReader extends TextDumpReader
 
     private void handleTimeoutStatement(final String[] tokens) throws Exception
     {
-        final long   now         = TextDumpConstants.stringToTime(tokens[1]);
+        final long   now         = TextDumpConstants.stringToTime(tokens[0]);
         final String statementId = tokens[2];
 
         eventHandler.timeoutStatement(now, statementId);
@@ -162,7 +162,7 @@ public class TextDumpEventReader extends TextDumpReader
 
     private void handleBeginVote(final String[] tokens) throws Exception
     {
-        final long   now               = TextDumpConstants.stringToTime(tokens[1]);
+        final long   now               = TextDumpConstants.stringToTime(tokens[0]);
         final String statementId       = tokens[2];
         final long   until             = TextDumpConstants.stringToTime(tokens[3]);
         final int    numEligibleVoters = Integer.parseInt(tokens[4]);
@@ -174,7 +174,7 @@ public class TextDumpEventReader extends TextDumpReader
 
     private void handleEndVoteAccepted(final String[] tokens) throws Exception
     {
-        final long   now         = TextDumpConstants.stringToTime(tokens[1]);
+        final long   now         = TextDumpConstants.stringToTime(tokens[0]);
         final String statementId = tokens[2];
 
         eventHandler.endVoteAccepted(now, statementId);
@@ -182,7 +182,7 @@ public class TextDumpEventReader extends TextDumpReader
 
     private void handleEndVoteRejected(final String[] tokens) throws Exception
     {
-        final long   now         = TextDumpConstants.stringToTime(tokens[1]);
+        final long   now         = TextDumpConstants.stringToTime(tokens[0]);
         final String statementId = tokens[2];
 
         eventHandler.endVoteRejected(now, statementId);

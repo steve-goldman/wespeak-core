@@ -12,51 +12,51 @@ public class TextDumpConstants
      * ignore lines that start with '#'
      *
      * pulse command looks like:
-     *     pulse|<now>
+     *     <now>|pulse
      *
      * heartbeat command looks like:
-     *     heartbeat|<now>|<user-id>
+     *     <now>|heartbeat|<user-id>
      *
      * leave command looks like:
-     *     leave|<now>|<user-id>
+     *     <now>|leave|<user-id>
      *
      * submit command looks like:
-     *     submit|<now>|<user-id>|<text-length>
+     *     <now>|submit|<user-id>|<text-length>
      *     <text>
      *
      * support command looks like:
-     *     support|<now>|<user-id>|<statement-id>
+     *     <now>|support|<user-id>|<statement-id>
      *
      * vote command looks like:
-     *     vote|<now>|<user-id>|<statement-id>|<vote>
+     *     <now>|vote|<user-id>|<statement-id>|<vote>
      *
      * heartbeat event looks like:
-     *     heartbeat|<now>|<user-id>|<active-until>
+     *     <now>|heartbeat|<user-id>|<active-until>
      *
      * submit event looks like:
-     *     submit|<now>|<user-id>|<statement-id>|<statement-active-until>|<num-eligible-supporters>|<num-support-needed>|<user-active-until>|<text-length>
+     *     <now>|submit|<user-id>|<statement-id>|<statement-active-until>|<num-eligible-supporters>|<num-support-needed>|<user-active-until>|<text-length>
      *     <text>
      *
      * support event looks like:
-     *     support|<now>|<user-id>|<statement-id>|<user-active-until>
+     *     <now>|support|<user-id>|<statement-id>|<user-active-until>
      *
      * vote event looks like:
-     *     vote|<now>|<user-id>|<statement-id>|<vote>|<user-active-until>
+     *     <now>|vote|<user-id>|<statement-id>|<vote>|<user-active-until>
      *
      * timeout user event looks like:
-     *     timeout_user|<now|<user-id>
+     *     <now>|timeout_user|<user-id>
      *
      * timeout statement event looks like:
-     *     timeout_statement|<now>|<statement-id>
+     *     <now>|timeout_statement|<statement-id>
      *
      * begin vote event looks like:
-     *     begin_vote|<now>|<statement-id>|<until>|<num-eligible-voters>|<num-votes-needed>|<num-yeses-needed>
+     *     <now>|begin_vote|<statement-id>|<until>|<num-eligible-voters>|<num-votes-needed>|<num-yeses-needed>
      *
      * end vote accepted event looks like:
-     *     end_vote_accepted|<now>|<statement-id>
+     *     <now>|end_vote_accepted|<statement-id>
      *
      * end vote rejected event looks like:
-     *     end_vote_rejected|<now>|<statement-id>
+     *     <now>|end_vote_rejected|<statement-id>
      */
 
     public static final String Comment   = "#";

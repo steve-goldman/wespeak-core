@@ -24,42 +24,42 @@ public class TextDumpCommandReader extends TextDumpReader
             final String[] tokens = line.split(Pattern.quote(TextDumpConstants.Separator));
 
             // check for pulse
-            if (TextDumpConstants.CommandTypes.Pulse.equals(tokens[0]))
+            if (TextDumpConstants.CommandTypes.Pulse.equals(tokens[1]))
             {
                 handlePulse(tokens);
                 return true;
             }
 
             // check for heartbeat
-            if (TextDumpConstants.CommandTypes.Heartbeat.equals(tokens[0]))
+            if (TextDumpConstants.CommandTypes.Heartbeat.equals(tokens[1]))
             {
                 handleHeartbeat(tokens);
                 return true;
             }
 
             // check for leave
-            if (TextDumpConstants.CommandTypes.Leave.equals(tokens[0]))
+            if (TextDumpConstants.CommandTypes.Leave.equals(tokens[1]))
             {
                 handleLeave(tokens);
                 return true;
             }
 
             // check for submit
-            if (TextDumpConstants.CommandTypes.Submit.equals(tokens[0]))
+            if (TextDumpConstants.CommandTypes.Submit.equals(tokens[1]))
             {
                 handleSubmit(tokens);
                 return true;
             }
 
             // check for support
-            if (TextDumpConstants.CommandTypes.Support.equals(tokens[0]))
+            if (TextDumpConstants.CommandTypes.Support.equals(tokens[1]))
             {
                 handleSupport(tokens);
                 return true;
             }
 
             // check for vote
-            if (TextDumpConstants.CommandTypes.Vote.equals(tokens[0]))
+            if (TextDumpConstants.CommandTypes.Vote.equals(tokens[1]))
             {
                 handleVote(tokens);
                 return true;
@@ -75,14 +75,14 @@ public class TextDumpCommandReader extends TextDumpReader
 
     private void handlePulse(final String[] tokens) throws Exception
     {
-        final long   now         = TextDumpConstants.stringToTime(tokens[1]);
+        final long   now         = TextDumpConstants.stringToTime(tokens[0]);
 
         commandHandler.pulse(now);
     }
 
     private void handleHeartbeat(final String[] tokens) throws Exception
     {
-        final long   now         = TextDumpConstants.stringToTime(tokens[1]);
+        final long   now         = TextDumpConstants.stringToTime(tokens[0]);
         final String userId      = tokens[2];
 
         commandHandler.heartbeat(now, userId);
@@ -90,7 +90,7 @@ public class TextDumpCommandReader extends TextDumpReader
 
     private void handleLeave(final String[] tokens) throws Exception
     {
-        final long   now         = TextDumpConstants.stringToTime(tokens[1]);
+        final long   now         = TextDumpConstants.stringToTime(tokens[0]);
         final String userId      = tokens[2];
 
         commandHandler.leave(now, userId);
@@ -98,7 +98,7 @@ public class TextDumpCommandReader extends TextDumpReader
 
     private void handleSubmit(final String[] tokens) throws Exception
     {
-        final long   now         = TextDumpConstants.stringToTime(tokens[1]);
+        final long   now         = TextDumpConstants.stringToTime(tokens[0]);
         final String userId      = tokens[2];
         final int    textLength  = Integer.parseInt(tokens[3]);
 
@@ -112,7 +112,7 @@ public class TextDumpCommandReader extends TextDumpReader
 
     private void handleSupport(final String[] tokens) throws Exception
     {
-        final long   now         = TextDumpConstants.stringToTime(tokens[1]);
+        final long   now         = TextDumpConstants.stringToTime(tokens[0]);
         final String userId      = tokens[2];
         final String statementId = tokens[3];
 
@@ -121,7 +121,7 @@ public class TextDumpCommandReader extends TextDumpReader
 
     private void handleVote(final String[] tokens) throws Exception
     {
-        final long   now         = TextDumpConstants.stringToTime(tokens[1]);
+        final long   now         = TextDumpConstants.stringToTime(tokens[0]);
         final String userId      = tokens[2];
         final String statementId = tokens[3];
         final Vote   vote        = Vote.valueOf(tokens[4]);
