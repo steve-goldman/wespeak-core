@@ -50,7 +50,7 @@ public class DataManagerQueueTest extends DataManagerTestBase
         validateQueue(dataManager.getSubmittedStatementIds(Steve), new String[]{Statement1, Statement3});
         validateQueue(dataManager.getSubmittedStatementIds(Mike), new String[]{Statement2});
 
-        validateQueues(new String[] {Statement3, Statement2, Statement1}, emptySet, emptySet, emptySet, emptySet);
+        validateQueues(new String[] {Statement1, Statement2, Statement3}, emptySet, emptySet, emptySet, emptySet);
 
         validateQueue(dataManager.getSupportedStatementsIds(Steve), emptySet);
         validateQueue(dataManager.getSupportedStatementsIds(Mike),  emptySet);
@@ -64,7 +64,7 @@ public class DataManagerQueueTest extends DataManagerTestBase
 
         timeoutStatement(Statement1);
 
-        validateQueues(new String[]{Statement3, Statement2}, new String[]{Statement1}, emptySet, emptySet, emptySet);
+        validateQueues(new String[]{Statement2, Statement3}, new String[]{Statement1}, emptySet, emptySet, emptySet);
 
         validateQueue(dataManager.getVotedStatementIds(Steve), emptySet);
         validateQueue(dataManager.getVotedStatementIds(Mike),  emptySet);
@@ -75,7 +75,7 @@ public class DataManagerQueueTest extends DataManagerTestBase
 
         beginVote(T2, Statement3, T3, 100, 50, 50);
 
-        validateQueues(emptySet, new String[] {Statement1}, new String[] {Statement3, Statement2}, emptySet, emptySet);
+        validateQueues(emptySet, new String[] {Statement1}, new String[] {Statement2, Statement3}, emptySet, emptySet);
 
         // this queue contains statements the user is eligible to vote for, regardless if she voted yet
         validateQueue(dataManager.getVotedStatementIds(Steve), new String[] {Statement2, Statement3});
