@@ -78,7 +78,7 @@ public class EngineTestBase
                 71);
 
         Assert.assertEquals(OneDay,     groupParameters.getUserTTL());
-        Assert.assertEquals(2 * OneDay, groupParameters.getSubmissionTTL());
+        Assert.assertEquals(2 * OneDay, groupParameters.getStatementTTL());
         Assert.assertEquals(5 * OneDay, groupParameters.getVoteTTL());
         Assert.assertEquals(37,         groupParameters.getSupportThreshold());
         Assert.assertEquals(53,         groupParameters.getVoteThreshold());
@@ -86,7 +86,7 @@ public class EngineTestBase
     }
 
     protected void primeParameters(final long userTTL,
-                                   final long submissionTTL,
+                                   final long statementTTL,
                                    final long voteTTL,
                                    final int  supportThreshold,
                                    final int  voteThreshold,
@@ -98,7 +98,7 @@ public class EngineTestBase
 
         for (final String text : new String[] {
                 SpecialStatements.makeUserTTL(userTTL),
-                SpecialStatements.makeSubmissionTTL(submissionTTL),
+                SpecialStatements.makeStatementTTL(statementTTL),
                 SpecialStatements.makeVoteTTL(voteTTL),
                 SpecialStatements.makeSupporthThreshold(supportThreshold),
                 SpecialStatements.makeVoteThreshold(voteThreshold),

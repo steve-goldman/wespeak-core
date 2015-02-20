@@ -64,7 +64,7 @@ public class Engine extends EngineBase implements CommandProcessor
         while (dataManager.hasActiveStatements())
         {
             final String statementId = dataManager.getNextActiveStatementIdToTimeout();
-            if (dataManager.getSubmissionTTL(now, statementId) > 0)
+            if (dataManager.getStatementTTL(now, statementId) > 0)
             {
                 break;
             }
@@ -126,12 +126,12 @@ public class Engine extends EngineBase implements CommandProcessor
             return userTTL > 1000L * 60 * 10 && userTTL < 1000L * 60 * 60 * 24 * 30;
         }
 
-        m = SpecialStatements.SubmissionTTL.matcher(text);
+        m = SpecialStatements.StatementTTL.matcher(text);
         if (m.find())
         {
             // TODO: make the bounds a parameter
-            final long submissionTTL = Long.parseLong(m.group(1));
-            return submissionTTL > 1000L * 60 * 10 && submissionTTL < 1000L * 60 * 60 * 24 * 30;
+            final long statementTTL = Long.parseLong(m.group(1));
+            return statementTTL > 1000L * 60 * 10 && statementTTL < 1000L * 60 * 60 * 24 * 30;
         }
 
         m = SpecialStatements.VoteTTL.matcher(text);
@@ -245,7 +245,7 @@ public class Engine extends EngineBase implements CommandProcessor
                 userId,
                 statementId,
                 text,
-                now + groupParameters.getSubmissionTTL(),
+                now + groupParameters.getStatementTTL(),
                 dataManager.getActiveUserCount(),
                 groupParameters.getSupportThreshold(),
                 now + groupParameters.getUserTTL());
@@ -255,7 +255,7 @@ public class Engine extends EngineBase implements CommandProcessor
                 userId,
                 statementId,
                 text,
-                now + groupParameters.getSubmissionTTL(),
+                now + groupParameters.getStatementTTL(),
                 dataManager.getActiveUserCount(),
                 groupParameters.getSupportThreshold(),
                 now + groupParameters.getUserTTL());

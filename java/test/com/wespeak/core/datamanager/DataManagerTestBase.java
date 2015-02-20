@@ -280,7 +280,7 @@ public class DataManagerTestBase
 
         // the submission time and TTL make sense
         Assert.assertEquals(now, dataManager.getSubmissionTime(statementId));
-        Assert.assertEquals(100, dataManager.getSubmissionTTL(until - 100, statementId));
+        Assert.assertEquals(100, dataManager.getStatementTTL(until - 100, statementId));
 
         // the submitter, text, num eligible supporters and prop support needed all match
         Assert.assertEquals(userId, dataManager.getSubmitter(statementId));

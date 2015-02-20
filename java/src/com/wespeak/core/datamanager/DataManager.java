@@ -218,7 +218,7 @@ public class DataManager implements EventHandler, DataQueries
     }
 
     @Override
-    public long getSubmissionTTL(final long now, final String statementId)
+    public long getStatementTTL(final long now, final String statementId)
     {
         validateStatementExists(statementId);
 

@@ -3,7 +3,7 @@ package com.wespeak.core.engine;
 public class GroupParameters
 {
     private long userTTL            = 1;
-    private long submissionTTL      = 1;
+    private long statementTTL       = 1;
     private long voteTTL            = 1;
     private int  supporthThreshold  = 1;
     private int  voteThreshold      = 1;
@@ -19,14 +19,14 @@ public class GroupParameters
         this.userTTL = userTTL;
     }
 
-    public long getSubmissionTTL()
+    public long getStatementTTL()
     {
-        return submissionTTL;
+        return statementTTL;
     }
 
-    public void setSubmissionTTL(final long submissionTTL)
+    public void setStatementTTL(final long statementTTL)
     {
-        this.submissionTTL = submissionTTL;
+        this.statementTTL = statementTTL;
     }
 
     public long getVoteTTL()

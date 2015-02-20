@@ -7,8 +7,8 @@ public class SpecialStatements
     private static final String  UserTTLStem          = "Change INACTIVITY TIMEOUT to ";
     public  static final Pattern UserTTL              = Pattern.compile("^" + UserTTLStem + "(\\d+)$");
 
-    private static final String  SubmissionTTLStem    = "Change STATEMENT LIFESPAN to ";
-    public  static final Pattern SubmissionTTL        = Pattern.compile("^" + SubmissionTTLStem + "(\\d+)$");
+    private static final String  StatementTTLStem     = "Change STATEMENT LIFESPAN to ";
+    public  static final Pattern StatementTTL         = Pattern.compile("^" + StatementTTLStem + "(\\d+)$");
 
     private static final String  VoteTTLStem          = "Change VOTE LIFESPAN to ";
     public  static final Pattern VoteTTL              = Pattern.compile("^" + VoteTTLStem + "(\\d+)$");
@@ -27,9 +27,9 @@ public class SpecialStatements
         return UserTTLStem + userTTL;
     }
 
-    public static String makeSubmissionTTL(final long submissionTTL)
+    public static String makeStatementTTL(final long statementTTL)
     {
-        return SubmissionTTLStem + submissionTTL;
+        return StatementTTLStem + statementTTL;
     }
 
     public static String makeVoteTTL(final long voteTTL)

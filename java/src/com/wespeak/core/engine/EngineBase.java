@@ -27,10 +27,10 @@ public class EngineBase
             return;
         }
 
-        m = SpecialStatements.SubmissionTTL.matcher(text);
+        m = SpecialStatements.StatementTTL.matcher(text);
         if (m.find())
         {
-            groupParameters.setSubmissionTTL(Long.parseLong(m.group(1)));
+            groupParameters.setStatementTTL(Long.parseLong(m.group(1)));
             return;
         }
 

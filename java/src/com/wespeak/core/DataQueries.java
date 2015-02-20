@@ -16,7 +16,7 @@ public interface DataQueries
     String   getText                   (String statementId);
     String   getSubmitter              (String statementId);
     long     getSubmissionTime         (String statementId);
-    long     getSubmissionTTL          (long now, String statementId);
+    long     getStatementTTL           (long now, String statementId);
     long     getVoteBeginTime          (String statementId);
     long     getVoteTTL                (long now, String statementId);
 

@@ -37,14 +37,14 @@ public class PassiveEngineTest
         passiveEngine.heartbeat(T0, Steve, T0 + groupParameters.getUserTTL());
 
         testParameterChange("userTTL",          SpecialStatements.makeUserTTL(OneDay));
-        testParameterChange("submissionTTL",    SpecialStatements.makeSubmissionTTL(2 * OneDay));
+        testParameterChange("statementTTL",     SpecialStatements.makeStatementTTL(2 * OneDay));
         testParameterChange("voteTTL",          SpecialStatements.makeVoteTTL(5 * OneDay));
         testParameterChange("supportThreshold", SpecialStatements.makeSupporthThreshold(37));
         testParameterChange("voteThreshold",    SpecialStatements.makeVoteThreshold(53));
         testParameterChange("yesThreshold",     SpecialStatements.makeYesThreshold(71));
 
         Assert.assertEquals(OneDay,     groupParameters.getUserTTL());
-        Assert.assertEquals(2 * OneDay, groupParameters.getSubmissionTTL());
+        Assert.assertEquals(2 * OneDay, groupParameters.getStatementTTL());
         Assert.assertEquals(5 * OneDay, groupParameters.getVoteTTL());
         Assert.assertEquals(37,         groupParameters.getSupportThreshold());
         Assert.assertEquals(53,         groupParameters.getVoteThreshold());
@@ -58,7 +58,7 @@ public class PassiveEngineTest
                 Steve,
                 statementId,
                 text,
-                T0 + groupParameters.getSubmissionTTL(),
+                T0 + groupParameters.getStatementTTL(),
                 1,
                 groupParameters.getSupportThreshold(),
                 T0 + groupParameters.getUserTTL());
