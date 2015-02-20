@@ -23,7 +23,9 @@ public interface StatementsTable
     int      getPropVotesNeeded      (String statementId);
     int      getPropYesesNeeded      (String statementId);
     boolean  hasActiveStatements     ();
-    String   getOldestActiveStatement();
+    String   getNextActiveStatementToTimeout();
+    boolean  hasVotingStatements     ();
+    String   getNextVotingStatementToTimeout();
 
     Iterator<String> getActiveStatements  ();
     Iterator<String> getInactiveStatements();

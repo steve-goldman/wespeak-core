@@ -378,9 +378,9 @@ public class DataManager implements EventHandler, DataQueries
     }
 
     @Override
-    public String getOldestActiveUserId()
+    public String getNextActiveUserIdToTimeout()
     {
-        return usersTable.getOldestActiveUserId();
+        return usersTable.getNextActiveUserIdToTimeout();
     }
 
     @Override
@@ -396,9 +396,21 @@ public class DataManager implements EventHandler, DataQueries
     }
 
     @Override
-    public String getOldestActiveStatementId()
+    public String getNextActiveStatementIdToTimeout()
     {
-        return statementsTable.getOldestActiveStatement();
+        return statementsTable.getNextActiveStatementToTimeout();
+    }
+
+    @Override
+    public boolean hasVotingStatements()
+    {
+        return statementsTable.hasVotingStatements();
+    }
+
+    @Override
+    public String getNextVotingStatementIdToTimeout()
+    {
+        return statementsTable.getNextVotingStatementToTimeout();
     }
 
     @Override

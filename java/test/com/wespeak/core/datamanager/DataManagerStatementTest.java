@@ -12,58 +12,126 @@ public class DataManagerStatementTest extends DataManagerTestBase
     }
 
     @Test
-    public void oldestActiveStatementFIFO()
+    public void nextActiveStatementToTimeoutFirstIn()
     {
-        // this is based on the order they are activated, not the "now" parameters
-
         heartbeat(T0, Steve, T2);
 
         Assert.assertFalse(dataManager.hasActiveStatements());
 
         submit(T0, Steve, Statement1, "all of western thought", T2, 100, 50, 50);
-        Assert.assertEquals(Statement1, dataManager.getOldestActiveStatementId());
+        Assert.assertTrue(dataManager.hasActiveStatements());
+        Assert.assertEquals(Statement1, dataManager.getNextActiveStatementIdToTimeout());
 
-        submit(T0, Steve, Statement2, "is a series of footnotes", T2, 100, 50, 50);
-        Assert.assertEquals(Statement1, dataManager.getOldestActiveStatementId());
+        submit(T0, Steve, Statement2, "is a series of footnotes", T2 + 1, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasActiveStatements());
+        Assert.assertEquals(Statement1, dataManager.getNextActiveStatementIdToTimeout());
 
-        submit(T0, Steve, Statement3, "to plato",                 T2, 100, 50, 50);
-        Assert.assertEquals(Statement1, dataManager.getOldestActiveStatementId());
+        submit(T0, Steve, Statement3, "to plato", T2 + 2, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasActiveStatements());
+        Assert.assertEquals(Statement1, dataManager.getNextActiveStatementIdToTimeout());
 
         timeoutStatement(Statement1);
-        Assert.assertEquals(Statement2, dataManager.getOldestActiveStatementId());
+        Assert.assertTrue(dataManager.hasActiveStatements());
+        Assert.assertEquals(Statement2, dataManager.getNextActiveStatementIdToTimeout());
 
         timeoutStatement(Statement2);
-        Assert.assertEquals(Statement3, dataManager.getOldestActiveStatementId());
+        Assert.assertTrue(dataManager.hasActiveStatements());
+        Assert.assertEquals(Statement3, dataManager.getNextActiveStatementIdToTimeout());
 
         timeoutStatement(Statement3);
         Assert.assertFalse(dataManager.hasActiveStatements());
     }
 
     @Test
-    public void oldestActiveStatementLIFO()
+    public void nextActiveStatementToTimeoutLastIn()
     {
-        // this is based on the order they are activated, not the "now" parameters
-
         heartbeat(T0, Steve, T2);
 
         Assert.assertFalse(dataManager.hasActiveStatements());
 
+        submit(T0, Steve, Statement3, "to plato", T2 + 2, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasActiveStatements());
+        Assert.assertEquals(Statement3, dataManager.getNextActiveStatementIdToTimeout());
+
+        submit(T0, Steve, Statement2, "is a series of footnotes", T2 + 1, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasActiveStatements());
+        Assert.assertEquals(Statement2, dataManager.getNextActiveStatementIdToTimeout());
+
         submit(T0, Steve, Statement1, "all of western thought", T2, 100, 50, 50);
-        Assert.assertEquals(Statement1, dataManager.getOldestActiveStatementId());
-
-        submit(T0, Steve, Statement2, "is a series of footnotes", T2, 100, 50, 50);
-        Assert.assertEquals(Statement1, dataManager.getOldestActiveStatementId());
-
-        submit(T0, Steve, Statement3, "to plato",                 T2, 100, 50, 50);
-        Assert.assertEquals(Statement1, dataManager.getOldestActiveStatementId());
-
-        timeoutStatement(Statement3);
-        Assert.assertEquals(Statement1, dataManager.getOldestActiveStatementId());
-
-        timeoutStatement(Statement2);
-        Assert.assertEquals(Statement1, dataManager.getOldestActiveStatementId());
+        Assert.assertTrue(dataManager.hasActiveStatements());
+        Assert.assertEquals(Statement1, dataManager.getNextActiveStatementIdToTimeout());
 
         timeoutStatement(Statement1);
+        Assert.assertTrue(dataManager.hasActiveStatements());
+        Assert.assertEquals(Statement2, dataManager.getNextActiveStatementIdToTimeout());
+
+        timeoutStatement(Statement2);
+        Assert.assertTrue(dataManager.hasActiveStatements());
+        Assert.assertEquals(Statement3, dataManager.getNextActiveStatementIdToTimeout());
+
+        timeoutStatement(Statement3);
+        Assert.assertFalse(dataManager.hasActiveStatements());
+    }
+
+    @Test
+    public void nextActiveStatementToTimeoutMiddleInOne()
+    {
+        heartbeat(T0, Steve, T2);
+
+        Assert.assertFalse(dataManager.hasActiveStatements());
+
+        submit(T0, Steve, Statement3, "to plato", T2 + 2, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasActiveStatements());
+        Assert.assertEquals(Statement3, dataManager.getNextActiveStatementIdToTimeout());
+
+        submit(T0, Steve, Statement1, "all of western thought", T2, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasActiveStatements());
+        Assert.assertEquals(Statement1, dataManager.getNextActiveStatementIdToTimeout());
+
+        submit(T0, Steve, Statement2, "is a series of footnotes", T2 + 1, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasActiveStatements());
+        Assert.assertEquals(Statement1, dataManager.getNextActiveStatementIdToTimeout());
+
+        timeoutStatement(Statement1);
+        Assert.assertTrue(dataManager.hasActiveStatements());
+        Assert.assertEquals(Statement2, dataManager.getNextActiveStatementIdToTimeout());
+
+        timeoutStatement(Statement2);
+        Assert.assertTrue(dataManager.hasActiveStatements());
+        Assert.assertEquals(Statement3, dataManager.getNextActiveStatementIdToTimeout());
+
+        timeoutStatement(Statement3);
+        Assert.assertFalse(dataManager.hasActiveStatements());
+    }
+
+    @Test
+    public void nextActiveStatementToTimeoutMiddleInTwo()
+    {
+        heartbeat(T0, Steve, T2);
+
+        Assert.assertFalse(dataManager.hasActiveStatements());
+
+        submit(T0, Steve, Statement2, "is a series of footnotes", T2 + 1, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasActiveStatements());
+        Assert.assertEquals(Statement2, dataManager.getNextActiveStatementIdToTimeout());
+
+        submit(T0, Steve, Statement1, "all of western thought", T2, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasActiveStatements());
+        Assert.assertEquals(Statement1, dataManager.getNextActiveStatementIdToTimeout());
+
+        submit(T0, Steve, Statement3, "to plato", T2 + 2, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasActiveStatements());
+        Assert.assertEquals(Statement1, dataManager.getNextActiveStatementIdToTimeout());
+
+        timeoutStatement(Statement1);
+        Assert.assertTrue(dataManager.hasActiveStatements());
+        Assert.assertEquals(Statement2, dataManager.getNextActiveStatementIdToTimeout());
+
+        timeoutStatement(Statement2);
+        Assert.assertTrue(dataManager.hasActiveStatements());
+        Assert.assertEquals(Statement3, dataManager.getNextActiveStatementIdToTimeout());
+
+        timeoutStatement(Statement3);
         Assert.assertFalse(dataManager.hasActiveStatements());
     }
 

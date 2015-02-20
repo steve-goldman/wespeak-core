@@ -5,7 +5,6 @@ import com.wespeak.core.datamanager.DataManager;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Iterator;
 import java.util.regex.Matcher;
 
 public class Engine extends EngineBase implements CommandProcessor
@@ -51,7 +50,7 @@ public class Engine extends EngineBase implements CommandProcessor
         // time out expired users
         while (dataManager.hasActiveUsers())
         {
-            final String userId = dataManager.getOldestActiveUserId();
+            final String userId = dataManager.getNextActiveUserIdToTimeout();
             if (dataManager.getUserTTL(now, userId) > 0)
             {
                 break;
@@ -64,7 +63,7 @@ public class Engine extends EngineBase implements CommandProcessor
         // time out expired statements
         while (dataManager.hasActiveStatements())
         {
-            final String statementId = dataManager.getOldestActiveStatementId();
+            final String statementId = dataManager.getNextActiveStatementIdToTimeout();
             if (dataManager.getSubmissionTTL(now, statementId) > 0)
             {
                 break;
@@ -75,24 +74,15 @@ public class Engine extends EngineBase implements CommandProcessor
         }
 
         // end votes
-
-        // TODO: this could be more efficient
-        boolean voteEnded = true;
-        while (voteEnded)
+        while (dataManager.hasVotingStatements())
         {
-            voteEnded = false;
-
-            final Iterator<String> iter = dataManager.getVotingStatementIds();
-            while (iter.hasNext())
+            final String statementId = dataManager.getNextVotingStatementIdToTimeout();
+            if (dataManager.getVoteTTL(now, statementId) > 0)
             {
-                final String statementId = iter.next();
-                if (dataManager.getVoteTTL(now, statementId) <= 0)
-                {
-                    endVote(now, statementId);
-                    voteEnded = true;
-                    break;
-                }
+                break;
             }
+
+            endVote(now, statementId);
         }
     }
 
@@ -272,8 +262,6 @@ public class Engine extends EngineBase implements CommandProcessor
 
         lastResponse    = new CommandResponse(CommandResponse.Code.OK, null);
         lastStatementId = statementId;
-
-        return;
     }
 
     @Override

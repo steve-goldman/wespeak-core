@@ -170,4 +170,140 @@ public class DataManagerVoteTest extends DataManagerTestBase
         vote(T1, Mike,  Statement1, Vote.NO,  T4);
         vote(T1, Ssor,  Statement1, Vote.YES, T4);
     }
+
+    @Test
+    public void nextVoteToEndFirstIn()
+    {
+        heartbeat(T0, Steve, T2);
+
+        Assert.assertFalse(dataManager.hasVotingStatements());
+
+        submit(T0, Steve, Statement1, "all of western thought", T2, 100, 50, 50);
+        beginVote(T0, Statement1, T2, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasVotingStatements());
+        Assert.assertEquals(Statement1, dataManager.getVotingStatementIds().next());
+
+        submit(T0, Steve, Statement2, "is a series of footnotes", T2, 100, 50, 50);
+        beginVote(T0, Statement2, T2 + 1, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasVotingStatements());
+        Assert.assertEquals(Statement1, dataManager.getVotingStatementIds().next());
+
+        submit(T0, Steve, Statement3, "to plato", T2, 100, 50, 50);
+        beginVote(T0, Statement3, T2 + 2, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasVotingStatements());
+        Assert.assertEquals(Statement1, dataManager.getVotingStatementIds().next());
+
+        endVoteAccepted(Statement1);
+        Assert.assertTrue(dataManager.hasVotingStatements());
+        Assert.assertEquals(Statement2, dataManager.getVotingStatementIds().next());
+
+        endVoteAccepted(Statement2);
+        Assert.assertTrue(dataManager.hasVotingStatements());
+        Assert.assertEquals(Statement3, dataManager.getVotingStatementIds().next());
+
+        endVoteAccepted(Statement3);
+        Assert.assertFalse(dataManager.hasVotingStatements());
+    }
+
+    @Test
+    public void nextVoteToEndLastIn()
+    {
+        heartbeat(T0, Steve, T2);
+
+        Assert.assertFalse(dataManager.hasVotingStatements());
+
+        submit(T0, Steve, Statement3, "to plato", T2, 100, 50, 50);
+        beginVote(T0, Statement3, T2 + 2, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasVotingStatements());
+        Assert.assertEquals(Statement3, dataManager.getVotingStatementIds().next());
+
+        submit(T0, Steve, Statement2, "is a series of footnotes", T2, 100, 50, 50);
+        beginVote(T0, Statement2, T2 + 1, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasVotingStatements());
+        Assert.assertEquals(Statement2, dataManager.getVotingStatementIds().next());
+
+        submit(T0, Steve, Statement1, "all of western thought", T2, 100, 50, 50);
+        beginVote(T0, Statement1, T2, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasVotingStatements());
+        Assert.assertEquals(Statement1, dataManager.getVotingStatementIds().next());
+
+        endVoteAccepted(Statement1);
+        Assert.assertTrue(dataManager.hasVotingStatements());
+        Assert.assertEquals(Statement2, dataManager.getVotingStatementIds().next());
+
+        endVoteAccepted(Statement2);
+        Assert.assertTrue(dataManager.hasVotingStatements());
+        Assert.assertEquals(Statement3, dataManager.getVotingStatementIds().next());
+
+        endVoteAccepted(Statement3);
+        Assert.assertFalse(dataManager.hasVotingStatements());
+    }
+
+    @Test
+    public void nextVoteToEndMiddleInOne()
+    {
+        heartbeat(T0, Steve, T2);
+
+        Assert.assertFalse(dataManager.hasVotingStatements());
+
+        submit(T0, Steve, Statement3, "to plato", T2, 100, 50, 50);
+        beginVote(T0, Statement3, T2 + 2, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasVotingStatements());
+        Assert.assertEquals(Statement3, dataManager.getVotingStatementIds().next());
+
+        submit(T0, Steve, Statement1, "all of western thought", T2, 100, 50, 50);
+        beginVote(T0, Statement1, T2, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasVotingStatements());
+        Assert.assertEquals(Statement1, dataManager.getVotingStatementIds().next());
+
+        submit(T0, Steve, Statement2, "is a series of footnotes", T2, 100, 50, 50);
+        beginVote(T0, Statement2, T2 + 1, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasVotingStatements());
+        Assert.assertEquals(Statement1, dataManager.getVotingStatementIds().next());
+
+        endVoteAccepted(Statement1);
+        Assert.assertTrue(dataManager.hasVotingStatements());
+        Assert.assertEquals(Statement2, dataManager.getVotingStatementIds().next());
+
+        endVoteAccepted(Statement2);
+        Assert.assertTrue(dataManager.hasVotingStatements());
+        Assert.assertEquals(Statement3, dataManager.getVotingStatementIds().next());
+
+        endVoteAccepted(Statement3);
+        Assert.assertFalse(dataManager.hasVotingStatements());
+    }
+
+    @Test
+    public void nextVoteToEndMiddleInTwo()
+    {
+        heartbeat(T0, Steve, T2);
+
+        Assert.assertFalse(dataManager.hasVotingStatements());
+
+        submit(T0, Steve, Statement2, "is a series of footnotes", T2, 100, 50, 50);
+        beginVote(T0, Statement2, T2 + 1, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasVotingStatements());
+        Assert.assertEquals(Statement2, dataManager.getVotingStatementIds().next());
+
+        submit(T0, Steve, Statement1, "all of western thought", T2, 100, 50, 50);
+        beginVote(T0, Statement1, T2, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasVotingStatements());
+        Assert.assertEquals(Statement1, dataManager.getVotingStatementIds().next());
+
+        submit(T0, Steve, Statement3, "to plato", T2, 100, 50, 50);
+        beginVote(T0, Statement3, T2 + 2, 100, 50, 50);
+        Assert.assertTrue(dataManager.hasVotingStatements());
+        Assert.assertEquals(Statement1, dataManager.getVotingStatementIds().next());
+
+        endVoteAccepted(Statement1);
+        Assert.assertTrue(dataManager.hasVotingStatements());
+        Assert.assertEquals(Statement2, dataManager.getVotingStatementIds().next());
+
+        endVoteAccepted(Statement2);
+        Assert.assertTrue(dataManager.hasVotingStatements());
+        Assert.assertEquals(Statement3, dataManager.getVotingStatementIds().next());
+
+        endVoteAccepted(Statement3);
+        Assert.assertFalse(dataManager.hasVotingStatements());
+    }
 }

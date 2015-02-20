@@ -36,10 +36,12 @@ public interface DataQueries
     int      getYesCount               (String statementId);
 
     boolean  hasActiveUsers            ();
-    String   getOldestActiveUserId     ();
+    String getNextActiveUserIdToTimeout();
     int      getActiveUserCount        ();
     boolean  hasActiveStatements       ();
-    String   getOldestActiveStatementId();
+    String getNextActiveStatementIdToTimeout();
+    boolean  hasVotingStatements       ();
+    String getNextVotingStatementIdToTimeout();
 
     boolean  isSupported               (String userId, String statementId);
     Vote     getVote                   (String userId, String statementId);

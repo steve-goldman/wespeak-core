@@ -14,7 +14,7 @@ public interface UsersTable
     Iterator<String> getActiveUsers();
     boolean hasActiveUsers       ();
     int     getActiveUserCount   ();
-    String  getOldestActiveUserId();
+    String  getNextActiveUserIdToTimeout();
 
     //
     // setters

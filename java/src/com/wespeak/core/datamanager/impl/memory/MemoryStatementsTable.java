@@ -43,11 +43,11 @@ public class MemoryStatementsTable implements StatementsTable
     }
 
     private final Map<String, StatementData> statementsById     = new LinkedHashMap<String, StatementData>();
-    private final Deque<StatementData>       activeStatements   = new LinkedList<StatementData>();
-    private final Deque<StatementData>       inactiveStatements = new LinkedList<StatementData>();
-    private final Deque<StatementData>       votingStatements   = new LinkedList<StatementData>();
-    private final Deque<StatementData>       acceptedStatements = new LinkedList<StatementData>();
-    private final Deque<StatementData>       rejectedStatements = new LinkedList<StatementData>();
+    private final LinkedList<StatementData>  activeStatements   = new LinkedList<StatementData>();
+    private final LinkedList<StatementData>  inactiveStatements = new LinkedList<StatementData>();
+    private final LinkedList<StatementData>  votingStatements   = new LinkedList<StatementData>();
+    private final LinkedList<StatementData>  acceptedStatements = new LinkedList<StatementData>();
+    private final LinkedList<StatementData>  rejectedStatements = new LinkedList<StatementData>();
 
     @Override
     public boolean exists(final String statementId)
@@ -134,14 +134,26 @@ public class MemoryStatementsTable implements StatementsTable
     }
 
     @Override
-    public String getOldestActiveStatement()
+    public String getNextActiveStatementToTimeout()
     {
-        return activeStatements.peekLast().statementId;
+        return activeStatements.getFirst().statementId;
     }
 
-    private Iterator<String> makeIterator(final Queue<StatementData> queue)
+    @Override
+    public boolean hasVotingStatements()
     {
-        final Iterator<StatementData> iter = queue.iterator();
+        return !votingStatements.isEmpty();
+    }
+
+    @Override
+    public String getNextVotingStatementToTimeout()
+    {
+        return votingStatements.getFirst().statementId;
+    }
+
+    private Iterator<String> makeIterator(final List<StatementData> list)
+    {
+        final Iterator<StatementData> iter = list.iterator();
         return new Iterator<String>()
         {
             @Override
@@ -253,7 +265,32 @@ public class MemoryStatementsTable implements StatementsTable
                 propSupportNeeded);
 
         statementsById.put(statementId, statementData);
-        activeStatements.addFirst(statementData);
+
+        // add sorted to active statements
+        if (activeStatements.isEmpty() || expirationTime < activeStatements.getFirst().expirationTime)
+        {
+            activeStatements.addFirst(statementData);
+        }
+        else
+        {
+            final ListIterator<StatementData> iter = activeStatements.listIterator(1);
+            boolean added = false;
+            while (iter.hasNext())
+            {
+                if (expirationTime < iter.next().expirationTime)
+                {
+                    iter.previous();
+                    iter.add(statementData);
+                    added = true;
+                    break;
+                }
+            }
+
+            if (!added)
+            {
+                iter.add(statementData);
+            }
+        }
     }
 
     @Override
@@ -277,14 +314,39 @@ public class MemoryStatementsTable implements StatementsTable
         final StatementData statementData = statementsById.get(statementId);
         statementData.state = StatementState.VOTING;
 
-        activeStatements.remove(statementData);
-        votingStatements.addFirst(statementData);
-
         statementData.voteBeginTime     = voteBeginTime;
         statementData.voteEndTime       = voteEndTime;
         statementData.numEligibleVoters = numEligibleVoters;
         statementData.propVotesNeeded   = propVotesNeeded;
         statementData.propYesesNeeded   = propYesesNeeded;
+
+        activeStatements.remove(statementData);
+
+        // add sorted to voting statements
+        if (votingStatements.isEmpty() || voteEndTime < votingStatements.getFirst().voteEndTime)
+        {
+            votingStatements.addFirst(statementData);
+        }
+        else
+        {
+            final ListIterator<StatementData> iter = votingStatements.listIterator(1);
+            boolean added = false;
+            while (iter.hasNext())
+            {
+                if (voteEndTime < iter.next().voteEndTime)
+                {
+                    iter.previous();
+                    iter.add(statementData);
+                    added = true;
+                    break;
+                }
+            }
+
+            if (!added)
+            {
+                iter.add(statementData);
+            }
+        }
     }
 
     @Override

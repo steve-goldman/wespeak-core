@@ -21,7 +21,7 @@ public class MemoryUsersTable implements UsersTable
     }
 
     private final Map<String, UserData> usersById   = new HashMap<String, UserData>();
-    private final Queue<UserData>       activeUsers = new LinkedList<UserData>();
+    private final LinkedList<UserData>  activeUsers = new LinkedList<UserData>();
 
     @Override
     public boolean exists(final String userId)
@@ -81,15 +81,20 @@ public class MemoryUsersTable implements UsersTable
     }
 
     @Override
-    public String getOldestActiveUserId()
+    public String getNextActiveUserIdToTimeout()
     {
-        return activeUsers.peek().userId;
+        return activeUsers.getFirst().userId;
     }
 
     @Override
     public void extendActive(final String userId, final long until)
     {
-        usersById.get(userId).activeUntil = until;
+        final UserData userData = usersById.get(userId);
+        userData.activeUntil = until;
+
+        // give it a new spot in the sorted active users list
+        activeUsers.remove(userData);
+        addActiveUserSorted(userData);
     }
 
     @Override
@@ -105,7 +110,34 @@ public class MemoryUsersTable implements UsersTable
         userData.activeFrom = from;
         userData.activeUntil = until;
 
-        activeUsers.add(userData);
+        addActiveUserSorted(userData);
+    }
+
+    private void addActiveUserSorted(final UserData userData)
+    {
+        if (activeUsers.isEmpty() || userData.activeUntil < activeUsers.getFirst().activeUntil)
+        {
+            activeUsers.addFirst(userData);
+            return;
+        }
+
+        final ListIterator<UserData> iter = activeUsers.listIterator(1);
+        boolean added = false;
+        while (iter.hasNext())
+        {
+            if (userData.activeUntil < iter.next().activeUntil)
+            {
+                iter.previous();
+                iter.add(userData);
+                added = true;
+                break;
+            }
+        }
+
+        if (!added)
+        {
+            iter.add(userData);
+        }
     }
 
     @Override
